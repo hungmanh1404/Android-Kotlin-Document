@@ -144,4 +144,12 @@ startActivity(Intent.createChooser(intent, "Chia sẻ với"))
 
 + Không có component name ⇒ là implicit Intent.
 
+## Sử dụng postValue setValue
+
+| Phương thức   | Dùng ở luồng nào            | Hoạt động                                                                       | Thường dùng khi                                                            |
+| ------------- | --------------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `setValue()`  | **Main thread (UI thread)** | Cập nhật giá trị **ngay lập tức** và thông báo observer                         | Bạn đang ở **UI thread** (ví dụ trong ViewModel hoặc khi click button)     |
+| `postValue()` | **Background thread**       | Gửi giá trị để cập nhật **sau đó** (chuyển qua main thread nội bộ của LiveData) | Bạn đang ở **background thread** (ví dụ trong coroutine hoặc callback API) |
+
+
 
