@@ -96,3 +96,8 @@ class MainActivity : AppCompatActivity() {
 }
 
 ``` 
+
+##  Trên Adapter chỉ tiến hành việc show UI còn xử lý logic các thứ thì xử lý ở UI sau đó notify data lại để Adapter lắng nghe.
+
+- Adapter chỉ nên lo việc “hiển thị dữ liệu lên UI” (UI binding).
+- Còn xử lý logic, tính toán, validate, gọi API, hay thay đổi data gốc nên làm ở UI (Activity / Fragment / ViewModel).
