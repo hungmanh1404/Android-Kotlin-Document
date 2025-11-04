@@ -152,4 +152,41 @@ startActivity(Intent.createChooser(intent, "Chia sẻ với"))
 | `postValue()` | **Background thread**       | Gửi giá trị để cập nhật **sau đó** (chuyển qua main thread nội bộ của LiveData) | Bạn đang ở **background thread** (ví dụ trong coroutine hoặc callback API) |
 
 
+# What is the Context?
+**Context là một đối tượng đại diện cho môi trường hiện tại mà ứng dụng đang chạy, Nó giúp bạn**
+
+- Truy cập tài nguyên (resources): string, color, drawable, layout, v.v.
+
+- Mở Activity, Service, BroadcastReceiver
+
+- Lấy thông tin hệ thống (vị trí file, theme, hệ thống…)
+
+- Lấy SharedPreferences, Database, Assets, System Service như LayoutInflater, ClipboardManager, v.v.
+
+🧱 2. Các loại Context phổ biến
+
+| Loại Context            | Nguồn gốc             | Phạm vi sống              | Dùng khi nào                                                                                             |
+| ----------------------- | --------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Application Context** | `applicationContext`  | Sống suốt vòng đời app    | Khi cần **ngữ cảnh toàn cục**, ví dụ hiển thị Toast, hoặc làm việc trong background (không phụ thuộc UI) |
+| **Activity Context**    | `this` trong Activity | Gắn với vòng đời Activity | Khi cần **hiển thị UI**, inflate layout, mở Activity khác, truy cập theme, resource phụ thuộc màn hình   |
+| **Service Context**     | `this` trong Service  | Gắn với vòng đời Service  | Khi thao tác trong `Service` (không có UI)                                                               |
+
+
+# Compare Singleton và Instance
+## 1. Định nghĩa cơ bản
+
+| Thuật ngữ                | Nghĩa ngắn gọn                                     | Số lượng tồn tại       | Được tạo ra khi nào                |
+| ------------------------ | -------------------------------------------------- | ---------------------- | ---------------------------------- |
+| **Instance (thể hiện)**  | Là **một đối tượng (object)** được tạo ra từ class | Nhiều (không giới hạn) | Mỗi lần gọi `ClassName()`          |
+| **Singleton (độc nhất)** | Là **một instance duy nhất toàn ứng dụng**         | Chỉ **1** duy nhất     | Được tạo 1 lần, sau đó tái sử dụng |
+
+## 2. Liên hệ thực tế trong Android
+
+| Tình huống              | Loại                                                | Giải thích                                                        |
+| ----------------------- | --------------------------------------------------- | ----------------------------------------------------------------- |
+| `Application` class     | **Singleton**                                       | Hệ thống Android chỉ tạo **1 Application instance** cho toàn app. |
+| `Activity`, `Fragment`  | **Instance**                                        | Mỗi lần mở màn hình → tạo một instance mới.                       |
+| `Repository` trong MVVM | Thường **Singleton**                                | Để dữ liệu dùng chung cho toàn app (ví dụ cache, API client).     |
+| `ViewModel`             | **Instance (có vòng đời riêng)**                    | Mỗi màn hình (hoặc scope) có ViewModel riêng.                     |
+| `Context`               | Có thể là **instance** hoặc **singleton**, tùy loại | `ApplicationContext` là singleton; `ActivityContext` là instance. |
 
