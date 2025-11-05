@@ -153,7 +153,7 @@ startActivity(Intent.createChooser(intent, "Chia sẻ với"))
 
 
 # What is the Context?
-**Context là một đối tượng đại diện cho môi trường hiện tại mà ứng dụng đang chạy, Nó giúp bạn**
+**Context là một đối tượng đại diện cho môi trường hoặc thông tin toàn cục hiện tại mà ứng dụng đang chạy, Nó giúp bạn**
 
 - Truy cập tài nguyên (resources): string, color, drawable, layout, v.v.
 

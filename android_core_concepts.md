@@ -93,4 +93,4 @@
 > 2️⃣ Data (Room, Prefs, Repo)  
 > 3️⃣ Network (Retrofit, Flow, API)  
 > 4️⃣ UI (RecyclerView, Compose, MotionLayout)  
-> 5️⃣ Architecture (MVVM, Hilt, Us
+> 5️⃣ Architecture (MVVM, Hilt, Koin)

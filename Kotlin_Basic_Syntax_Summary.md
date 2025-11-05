@@ -4,6 +4,184 @@ Tổng hợp toàn bộ kiến thức cơ bản trong [Kotlin Basic Syntax](http
 
 ---
 
+
+🧩 1. Kotlin cơ bản (làm nền tảng ngôn ngữ)
+
+- Biến và kiểu dữ liệu: val, var, Int, String, List, Map, Boolean
+
+```kt
+val scoreMap = mutableMapOf(
+    "A" to 90,
+    "B" to 85
+)
+
+// Thêm phần tử mới
+scoreMap["C"] = 70
+
+// Sửa giá trị
+scoreMap["B"] = 95
+
+```
+
+- Cấu trúc điều khiển: if-else, when, for, while, do while
+
+- Hàm (function): cách khai báo, truyền tham số, trả về giá trị
+
+- Lớp & đối tượng: class, object, constructor, inheritance, interface
+
+```kt
+class UserViewModel(private val user: User)
+          ↑
+          |__ Constructor (cổng nhận dữ liệu)
+          
+Khi gọi:
+val viewModel = UserViewModel(User("Mạnh", 25))
+           ↑
+           |__ Kotlin gọi constructor, truyền dữ liệu vào
+
+
+// INTERFACE
+interface UserRepository {
+    fun getUserName(): String
+}
+
+// Triển khai từ API
+class ApiUserRepository : UserRepository {
+    override fun getUserName() = "Từ API: Mạnh"
+}
+
+// Triển khai từ local DB
+class LocalUserRepository : UserRepository {
+    override fun getUserName() = "Từ Room DB: Mạnh"
+}
+
+// ViewModel chỉ cần biết interface, không quan tâm nguồn dữ liệu
+class UserViewModel(private val repo: UserRepository) {
+    fun showUser() {
+        println(repo.getUserName())
+    }
+}
+
+```
+
+- Null Safety: dấu ?, !!, ?:, let, run
+
+- Extension function: mở rộng chức năng cho class có sẵn
+```kt
+fun View.hide() {
+    this.visibility = View.GONE
+}
+
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+fun String.truncate(maxLength: Int): String {
+    return if (this.length <= maxLength) this else take(maxLength - 3) + "..."
+}
+
+fun main() {
+    val shortUsername = "KotlinFan42"
+    val longUsername = "JetBrainsLoverForever"
+
+    println("Short username: ${shortUsername.truncate(15)}") 
+    // KotlinFan42
+    println("Long username:  ${longUsername.truncate(15)}")
+    // JetBrainsLov...
+}
+```
+
+- Lambda, higher-order function: dùng cho callback, adapter
+```kt
+Lambda = một hàm ẩn danh (anonymous function) — tức là hàm không có tên riêng, có thể được gán vào biến, truyền như tham số, hoặc trả về từ hàm khác.
+val sum: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
+
+Trong đó { x: Int, y: Int -> x + y } là lambda. 
+Kotlin
+
+//Higher-order
+Một hàm được gọi là higher-order nếu nó nhận một hoặc nhiều hàm làm tham số, hoặc trả về một hàm. 
+Kotlin
+
+Nói cách khác: thay vì chỉ nhận dữ liệu như Int, String… thì nó nhận “hàm” như một tham số.
+
+fun operate(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
+    return operation(a, b)
+}
+
+fun main() {
+    val sum = operate(4, 5) { x, y -> x + y }
+    println(sum)  // 👉 9
+}
+
+operate là higher-order function vì tham số operation là một hàm (Int, Int) -> Int.
+
+Khi gọi operate(4, 5) { x, y -> x + y }, ta truyền lambda làm operation.
+
+Kết quả: 9.
+
+```
+
+📱 2. Android cơ bản (nắm vững cấu trúc app)
+
+**Hiểu rõ 3 thành phần chính:**
+
+- Application: Chạy đầu tiên khởi tạo những thứ cần thiết
+
+- Activity: màn hình chính của app
+
+- Fragment: phần nhỏ tái sử dụng trong Activity
+
+- View: các thành phần UI (TextView, Button, ImageView, RecyclerView, v.v.)
+
+**Các phần quan trọng:**
+
+- Lifecycle của Activity & Fragment
+
+- Intent và Bundle (chuyển dữ liệu giữa các màn hình)
+
+```kt
+//Intent
+val intent = Intent(this, SecondActivity::class.java)
+startActivity(intent)
+
+val intent = Intent(this, DetailActivity::class.java)
+intent.putExtra("userName", "Mạnh Nguyễn")
+intent.putExtra("age", 25)
+startActivity(intent)
+
+val userName = intent.getStringExtra("userName")
+val age = intent.getIntExtra("age", 0)
+
+binding.textView.text = "Tên: $userName - Tuổi: $age"
+
+//Bundle
+
+val bundle = Bundle()
+bundle.putString("email", "manh@gmail.com")
+bundle.putInt("score", 99)
+
+val intent = Intent(this, ResultActivity::class.java)
+intent.putExtras(bundle)
+startActivity(intent)
+
+val bundle = intent.extras
+val email = bundle?.getString("email")
+val score = bundle?.getInt("score")
+
+binding.textView.text = "Email: $email - Điểm: $score"
+
+
+
+```
+
+- RecyclerView (hiển thị danh sách dữ liệu)
+
+- ViewBinding / DataBinding (liên kết layout với code Kotlin)
+
+- Context và Application (hiểu cách Android quản lý tài nguyên)
+
+
 ## 🧱 1. Khai báo biến (Variables)
 
 ```kotlin
