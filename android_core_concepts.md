@@ -1,5 +1,21 @@
 # 🧠 Tổng Hợp Các Khái Niệm Quan Trọng Trong Android (Thực Chiến)
 
+**Trang “Recommendations for Android architecture” liệt kê các lời khuyên để cải thiện chất lượng app. Một số nổi bật:**
+
+- Có một data layer rõ ràng: Strongly recommended. 
+Android Developers
+
+- UI layer rõ ràng: Strongly recommended. 
+Android Developers
+
+- UI không nên truy xuất trực tiếp dữ liệu từ nguồn (ví dụ DB/network) mà thông qua repository. 
+Android Developers
+
+- Sử dụng coroutines và Flows (đối với Kotlin) cho xử lý bất đồng bộ & truyền dữ liệu giữa các lớp. 
+Android Developers
+
+- Module hóa code (modularization) để tăng khả năng mở rộng và tái sử dụng
+
 ## ⚙️ 1. Nền tảng cốt lõi (Core Android)
 
 | Khái niệm | Dễ hiểu | Dùng khi nào |
@@ -20,7 +36,7 @@
 
 | Khái niệm | Dễ hiểu | Dùng khi nào |
 |------------|----------|--------------|
-| **SharedPreferences / DataStore** | Lưu dữ liệu nhỏ, key–value | Token, setting, theme |
+| **SharedPreferences / DataS tore** | Lưu dữ liệu nhỏ, key–value | Token, setting, theme |
 | **Room Database** | ORM quản lý SQLite | Lưu dữ liệu lớn: story, user, cache |
 | **Repository pattern** | Lớp trung gian giữa data & UI | Gom API + DB + logic caching |
 | **ViewModel + LiveData/StateFlow** | Giữ dữ liệu & phản ứng UI | Dữ liệu không mất khi xoay màn hình |
