@@ -1,4 +1,4 @@
-# Kotlin Cheat Sheet
+ # Kotlin Cheat Sheet
 
 ## 1. Chuỗi (String)
 | Phương thức | Mô tả | Ví dụ |

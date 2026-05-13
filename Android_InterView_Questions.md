@@ -244,3 +244,6 @@ viewModelScope.launch(Dispatchers.IO) {
 
 **Tổng kết:**  
 File này giúp nắm vững nền tảng Android: kế thừa, đóng gói, layout, LiveData, Coroutine, Adapter và ViewModel.
+
+## Vì sao lại dùng enum để khai báo các type của input?
+- Khi khai báo kiểu truyền vào thì nó thuộc các type đó, không thể truyền text free vào đc. Nó sẽ báo lỗi và nghiêm ngặt code hơn.
