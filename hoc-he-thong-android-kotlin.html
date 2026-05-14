@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lộ trình học Android & Kotlin — Bản đồ não</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --surface2: #243044;
+      --text: #e8eef4;
+      --muted: #9fb0c3;
+      --accent: #5eb8ff;
+      --accent2: #7ee787;
+      --warn: #f0c674;
+      --border: #2d3d52;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, "Cascadia Code", "Fira Code", monospace;
+      --radius: 10px;
+      --maxw: 920px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(200px, 260px) 1fr;
+      min-height: 100vh;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { position: relative !important; max-height: none !important; border-right: none; border-bottom: 1px solid var(--border); }
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      max-height: 100vh;
+      overflow-y: auto;
+      padding: 1.25rem 1rem 2rem;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+    }
+    aside h1 {
+      font-size: 1rem;
+      margin: 0 0 0.75rem;
+      color: var(--accent2);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    aside nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    aside nav li { margin: 0.35rem 0; }
+    aside nav a {
+      color: var(--muted);
+      font-size: 0.88rem;
+      display: block;
+      padding: 0.2rem 0;
+    }
+    aside nav a:hover { color: var(--text); }
+    main {
+      padding: 2rem 1.5rem 4rem;
+      max-width: calc(var(--maxw) + 4rem);
+    }
+    .lead {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: var(--maxw);
+      margin-bottom: 2rem;
+    }
+    .mind-map {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      max-width: var(--maxw);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      white-space: pre-wrap;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    section {
+      margin-bottom: 3rem;
+      scroll-margin-top: 1rem;
+    }
+    section > h2 {
+      font-size: 1.35rem;
+      margin: 0 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--accent);
+      max-width: var(--maxw);
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin: 1.5rem 0 0.65rem;
+      color: var(--accent2);
+      max-width: var(--maxw);
+    }
+    p, ul { max-width: var(--maxw); }
+    ul { padding-left: 1.25rem; }
+    li { margin: 0.35rem 0; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      max-width: var(--maxw);
+    }
+    .card strong { color: var(--warn); }
+    table {
+      width: 100%;
+      max-width: var(--maxw);
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin: 1rem 0;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--surface2); color: var(--accent2); }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    pre, .code {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      max-width: var(--maxw);
+      margin: 0.75rem 0;
+    }
+    details {
+      max-width: var(--maxw);
+      margin: 0.75rem 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 0.5rem 1rem;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: var(--surface2);
+      color: var(--muted);
+      margin-right: 0.35rem;
+    }
+    .footnote {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: var(--maxw);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <h1>Bản đồ học</h1>
+      <nav>
+        <ul>
+          <li><a href="#lo-trinh">0. Cách đọc (lộ trình não)</a></li>
+          <li><a href="#kotlin-nen">1. Kotlin nền</a></li>
+          <li><a href="#android-core">2. Android cốt lõi</a></li>
+          <li><a href="#manifest">3. AndroidManifest</a></li>
+          <li><a href="#async">4. Thread &amp; Coroutine</a></li>
+          <li><a href="#data">5. Lưu trữ &amp; kiến trúc dữ liệu</a></li>
+          <li><a href="#ui">6. UI: RecyclerView / Adapter</a></li>
+          <li><a href="#scope-inline">7. Scope functions &amp; inline</a></li>
+          <li><a href="#on-tap">8. Ôn phỏng vấn (rút gọn)</a></li>
+          <li><a href="#phu-luc">9. Phụ lục (file khác trong folder)</a></li>
+        </ul>
+      </nav>
+      <p class="footnote" style="margin-top:1.5rem;">Mở file này bằng trình duyệt. Nguồn: toàn bộ <code>.md</code> trong repo của bạn.</p>
+    </aside>
+
+    <main>
+      <p class="lead">
+        Trang này sắp xếp lại kiến thức theo thứ tự <strong>từ nền tảng → ứng dụng thực tế</strong>, giúp não bạn “đóng khung” trước khi nhớ chi tiết.
+        Nguyên tắc: <em>hiểu bức tranh lớn trước, sau đó mới đi sâu từng mảnh</em>.
+      </p>
+
+      <section id="lo-trinh">
+        <h2>0. Lộ trình học (thứ tự não dễ nhớ)</h2>
+        <div class="mind-map">1) NGÔN NGỮ (Kotlin): biến, null, collection, hàm, class/interface, lambda
+2) NỀN ANDROID: Activity / Fragment / View / Lifecycle / Intent / Context
+3) KIẾN TRÚC &amp; DỮ LIỆU: ViewModel, Repository, Room / Prefs, UDF
+4) BẤT ĐỒNG BỘ: Main vs IO vs Default, coroutine scope, withContext vs launch lồng nhau
+5) UI DANH SÁCH: RecyclerView + Adapter + notify*
+6) HOÀN THIỆN: Manifest, Service, phỏng vấn, idioms Kotlin</div>
+        <div class="card">
+          <span class="tag">Ghi nhớ 7 nhóm</span> từ <code>android_core_concepts.md</code>:
+          Core (Context, Intent…) → Data → Network → UI → Architecture → Hệ thống (WorkManager, Notification…) → Công cụ (Binding, Compose, Proguard…).
+        </div>
+      </section>
+
+      <section id="kotlin-nen">
+        <h2>1. Kotlin nền</h2>
+        <h3>1.1 Cú pháp &amp; khái niệm cốt lõi</h3>
+        <p><code>val</code> bất biến, <code>var</code> có thể đổi. Điều khiển: <code>if</code> là biểu thức, <code>when</code>, vòng lặp <code>for</code>/<code>while</code>. Hàm có thể rút gọn một dòng. Null: <code>?</code>, <code>?:</code>, <code>!!</code> (tránh lạm dụng). Smart cast với <code>is</code>.</p>
+        <table>
+          <thead><tr><th>Chủ đề</th><th>Ghi nhớ nhanh</th></tr></thead>
+          <tbody>
+            <tr><td>Biến</td><td><code>val</code> / <code>var</code></td></tr>
+            <tr><td>Collection</td><td><code>listOf</code>, <code>mutableListOf</code>, <code>filter</code>/<code>map</code></td></tr>
+            <tr><td>Class</td><td>Constructor rút gọn, property, <code>data class</code> cho DTO</td></tr>
+            <tr><td>Lambda / HOF</td><td>Hàm làm tham số; <code>filter</code>, <code>map</code> là ví dụ HOF</td></tr>
+          </tbody>
+        </table>
+
+        <h3>1.2 “Cheat sheet” String / Number / List</h3>
+        <p>String: <code>trim</code>, <code>split</code>, <code>substring</code>, <code>replace</code>, <code>isBlank</code>. Number: <code>toInt()</code>, <code>coerceIn</code>, <code>random()</code>. List: <code>filter</code>/<code>map</code>/<code>sorted</code>, mutable <code>add</code>/<code>remove</code>.</p>
+
+        <h3>1.3 Generic (tổng quát hóa kiểu)</h3>
+        <p>Viết <code>fun &lt;T&gt; …</code> khi logic giống nhau cho nhiều kiểu (ví dụ <code>firstElement(list: List&lt;T&gt;)</code>).</p>
+
+        <h3>1.4 Idioms Kotlin (tóm tắt)</h3>
+        <ul>
+          <li><code>data class</code> cho model; tham số mặc định thay overload.</li>
+          <li><code>by lazy</code> khởi tạo lười; <code>use</code> đóng resource.</li>
+          <li><code>object</code> singleton; <code>companion object</code> như static.</li>
+          <li><code>inline</code> + <code>reified</code> khi cần kiểu generic lúc runtime (ví dụ Gson).</li>
+        </ul>
+        <p class="footnote">Chi tiết đầy đủ: <code>Kotlin_Basic_Syntax_Summary.md</code>, <code>kotlin_method.md</code>, <code>Generic_Function.md</code>, <code>Kotlin_Idioms_Analysis.md</code>.</p>
+      </section>
+
+      <section id="android-core">
+        <h2>2. Android cốt lõi</h2>
+        <table>
+          <thead><tr><th>Khái niệm</th><th>Ý dễ nhớ</th><th>Khi nào</th></tr></thead>
+          <tbody>
+            <tr><td>Context</td><td>Môi trường app: resource, mở Activity, Prefs…</td><td>Mọi nơi cần “ngữ cảnh”</td></tr>
+            <tr><td>Application</td><td>Singleton toàn app</td><td>Khởi tạo SDK, DI, log</td></tr>
+            <tr><td>Activity</td><td>Một màn hình</td><td>Điều hướng, UI gốc</td></tr>
+            <tr><td>Fragment</td><td>Mảnh UI trong Activity</td><td>Tab, navigation</td></tr>
+            <tr><td>Intent</td><td>Thông điệp yêu cầu hành động</td><td>Mở màn hình, gọi app khác</td></tr>
+            <tr><td>Bundle</td><td>Gói key–value</td><td>Truyền dữ liệu kèm Intent</td></tr>
+            <tr><td>Service</td><td>Chạy nền, không UI</td><td>Nhạc, tải file…</td></tr>
+            <tr><td>BroadcastReceiver</td><td>Nghe sự kiện hệ thống</td><td>Mạng, pin…</td></tr>
+            <tr><td>ContentProvider</td><td>Chia sẻ dữ liệu</td><td>App khác đọc có kiểm soát</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Intent: Explicit vs Implicit</h3>
+        <ul>
+          <li><strong>Explicit:</strong> chỉ rõ class — thường trong cùng app.</li>
+          <li><strong>Implicit:</strong> chỉ <code>action</code> + <code>data</code>/<code>type</code> — hệ thống chọn app xử lý (trình duyệt, gọi điện, SMS…).</li>
+        </ul>
+        <p>Thành phần Intent: component name, action, data, category, extras, flags.</p>
+
+        <h3>Context: Application vs Activity</h3>
+        <table>
+          <thead><tr><th>Loại</th><th>Phạm vi sống</th><th>Dùng khi</th></tr></thead>
+          <tbody>
+            <tr><td><code>applicationContext</code></td><td>Suốt đời app</td><td>Không gắn UI; tránh leak Activity</td></tr>
+            <tr><td>Activity <code>this</code></td><td>Theo Activity</td><td>Theme, inflate, start Activity</td></tr>
+            <tr><td>Service</td><td>Theo Service</td><td>Tác vụ nền không UI</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Singleton vs Instance (liên hệ Android)</h3>
+        <p><code>Application</code> là singleton; mỗi Activity/Fragment là instance mới; ViewModel là instance theo scope; Repository thường singleton để dùng chung.</p>
+
+        <h3>LiveData: <code>setValue</code> vs <code>postValue</code></h3>
+        <table>
+          <thead><tr><th>API</th><th>Luồng</th><th>Ý nghĩa</th></tr></thead>
+          <tbody>
+            <tr><td><code>setValue()</code></td><td>Main thread</td><td>Cập nhật ngay, thông báo observer</td></tr>
+            <tr><td><code>postValue()</code></td><td>Background</td><td>Đưa giá trị về main rồi mới set</td></tr>
+          </tbody>
+        </table>
+
+        <p class="footnote">Nguồn: <code>Base_Knowledge.md</code>, <code>android_core_concepts.md</code>, <code>Services_Android.md</code>.</p>
+      </section>
+
+      <section id="manifest">
+        <h2>3. AndroidManifest — “sơ đồ khai báo app”</h2>
+        <table>
+          <thead><tr><th>Thẻ</th><th>Vai trò</th></tr></thead>
+          <tbody>
+            <tr><td><code>&lt;manifest&gt;</code></td><td>Gốc: package, permission chung</td></tr>
+            <tr><td><code>&lt;application&gt;</code></td><td>icon, theme, chứa Activity/Service/…</td></tr>
+            <tr><td><code>&lt;activity&gt;</code></td><td>Màn hình; <code>MAIN</code>/<code>LAUNCHER</code> cho app mở đầu</td></tr>
+            <tr><td><code>&lt;intent-filter&gt;</code></td><td>Component nhận intent nào</td></tr>
+            <tr><td><code>&lt;service&gt;</code></td><td>Tác vụ nền</td></tr>
+            <tr><td><code>&lt;receiver&gt;</code></td><td>Broadcast</td></tr>
+            <tr><td><code>&lt;provider&gt;</code></td><td>Chia sẻ dữ liệu</td></tr>
+            <tr><td><code>&lt;uses-permission&gt;</code></td><td>Xin quyền</td></tr>
+            <tr><td><code>&lt;uses-feature&gt;</code></td><td>Yêu cầu phần cứng (Play filter)</td></tr>
+            <tr><td><code>&lt;meta-data&gt;</code></td><td>Cấu hình SDK (Maps, Firebase…)</td></tr>
+          </tbody>
+        </table>
+        <p class="footnote">Chi tiết + ví dụ XML: <code>AndroidManifest_Explained.md</code>.</p>
+      </section>
+
+      <section id="async">
+        <h2>4. Thread &amp; Coroutine (bất đồng bộ)</h2>
+
+        <h3>4.1 Bức tranh từ User → CPU</h3>
+        <div class="mind-map">USER ACTION
+    → Lifecycle owner (Activity / Fragment / ViewModel)
+    → Scope (lifecycleScope / viewModelScope)
+    → Coroutine (launch / async)
+    → suspend (delay, Retrofit, Room) — không = thread
+    → Dispatcher (Main / IO / Default)
+    → Thread (OS)
+    → CPU</div>
+
+        <h3>4.2 Phân biệt Dispatcher (từ tài liệu Thread)</h3>
+        <table>
+          <thead><tr><th>Dispatcher</th><th>Bản chất</th><th>Ví dụ việc</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Main</strong></td><td>Một luồng UI, gắn Looper</td><td>Vẽ UI, click, lifecycle</td></tr>
+            <tr><td><strong>Default</strong></td><td>Pool CPU, ~ số core</td><td>Sort, DiffUtil, parse JSON lớn</td></tr>
+            <tr><td><strong>IO</strong></td><td>Pool lớn cho chờ/blocking</td><td>Network, file, DB</td></tr>
+          </tbody>
+        </table>
+
+        <h3>4.3 <code>viewModelScope</code> vs <code>lifecycleScope</code></h3>
+        <div class="card">
+          <strong>Logic / data / API</strong> → <code>viewModelScope</code><br />
+          <strong>Render / collect / animation</strong> gắn UI → <code>lifecycleScope</code> (hoặc <code>viewLifecycleOwner</code> trong Fragment)<br />
+          Phải biết <em>scope gắn với cái gì và hủy khi nào</em>.
+        </div>
+
+        <h3>4.4 <code>withContext</code> vs <code>launch</code> lồng nhau</h3>
+        <ul>
+          <li><strong>withContext:</strong> cùng một coroutine, đổi “phòng” (dispatcher) — tuần tự, kiểm soát thứ tự.</li>
+          <li><strong>launch</strong> bên trong: tạo coroutine mới — có thể chạy song song, dễ mất thứ tự nếu không chờ.</li>
+        </ul>
+        <p>Pattern an toàn: lấy dữ liệu trên IO bằng <code>withContext</code>, rồi cập nhật UI trên Main trong cùng <code>launch</code> gốc.</p>
+        <div class="code">viewModelScope.launch {
+    val user = withContext(Dispatchers.IO) { api.getUser() }
+    showUser(user)  // chắc chắn sau khi IO xong
+}</div>
+
+        <h3>4.5 Chuỗi khái niệm (phỏng vấn)</h3>
+        <p>Coroutine không tồn tại để “nhanh hơn thread” mà để <strong>dùng thread thông minh hơn</strong>: CPU → Thread → Coroutine → Dispatcher → Scope → Lifecycle.</p>
+
+        <details>
+          <summary>Xoay màn hình (configuration change)</summary>
+          <p>Rotation = đổi cấu hình → UI bị destroy và tạo lại; process vẫn sống. Dữ liệu UI nên giữ ở ViewModel / saved state, không chỉ biến trong Activity.</p>
+        </details>
+
+        <p class="footnote">Nguồn: <code>Readme.md</code>, <code>Thread_Concept_Android.md</code>, <code>Android_Engineers_Questions.md</code>.</p>
+      </section>
+
+      <section id="data">
+        <h2>5. Lưu trữ &amp; kiến trúc dữ liệu</h2>
+
+        <h3>5.1 SharedPreferences vs Room</h3>
+        <table>
+          <thead><tr><th>Tiêu chí</th><th>SharedPreferences</th><th>Room</th></tr></thead>
+          <tbody>
+            <tr><td>Mục đích</td><td>Key–value đơn giản</td><td>Dữ liệu có cấu trúc, quan hệ</td></tr>
+            <tr><td>Kiểu dữ liệu</td><td>Primitive + String</td><td>Entity, quan hệ, truy vấn</td></tr>
+            <tr><td>Nền</td><td>XML (load cả file)</td><td>SQLite + DAO</td></tr>
+            <tr><td>Quy mô</td><td>Nhỏ (&lt;~1MB)</td><td>Lớn, có index</td></tr>
+            <tr><td>Flow/LiveData</td><td>Không native</td><td>Hỗ trợ</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Cảnh báo bộ nhớ:</strong> đừng nhét JSON list khổng lồ vào Prefs (cả file vào RAM). Room vẫn có thể OOM nếu <code>SELECT *</code> không giới hạn — dùng <code>LIMIT</code>, Paging, Flow.</p>
+
+        <h3>5.2 UDF (Unidirectional Data Flow)</h3>
+        <div class="mind-map">UI gửi Event → ViewModel xử lý → cập nhật State
+→ UI observe / collect → render lại
+
+Compose: stateless UI + collectAsState
+XML: LiveData/Flow observe</div>
+        <p class="footnote">Bảng so XML vs Compose (UDF): <code>Android_Engineers_Questions.md</code>.</p>
+      </section>
+
+      <section id="ui">
+        <h2>6. RecyclerView &amp; Adapter</h2>
+        <p>Nguyên tắc từ tài liệu: <strong>Adapter chỉ bind UI</strong>; logic, API, validate làm ở Activity/Fragment/ViewModel, rồi cập nhật data và gọi <code>notify*</code>.</p>
+        <table>
+          <thead><tr><th>Phương thức</th><th>Khi dùng</th></tr></thead>
+          <tbody>
+            <tr><td><code>notifyDataSetChanged()</code></td><td>Đổi toàn bộ / không biết item nào đổi (đắt hơn)</td></tr>
+            <tr><td><code>notifyItemInserted/Removed/Changed/Moved</code></td><td>Thao tác cụ thể — mượt hơn</td></tr>
+            <tr><td><code>notifyItemRange*</code></td><td>Nhiều item liên tiếp</td></tr>
+          </tbody>
+        </table>
+        <p class="footnote">Code mẫu: <code>Adapter_Android.md</code>.</p>
+      </section>
+
+      <section id="scope-inline">
+        <h2>7. Scope functions &amp; inline</h2>
+
+        <h3>7.1 Bảng nhanh (let / run / apply / also / with)</h3>
+        <table>
+          <thead><tr><th>Function</th><th>Trong block</th><th>Trả về</th><th>Dùng khi</th></tr></thead>
+          <tbody>
+            <tr><td><code>let</code></td><td><code>it</code></td><td>Kết quả lambda</td><td>Nullable, chain, trả giá trị mới</td></tr>
+            <tr><td><code>run</code></td><td><code>this</code></td><td>Kết quả lambda</td><td>Config + trả kết quả (vd Dialog <code>create()</code>)</td></tr>
+            <tr><td><code>apply</code></td><td><code>this</code></td><td>Chính object</td><td>Khởi tạo/cấu hình object</td></tr>
+            <tr><td><code>also</code></td><td><code>it</code></td><td>Chính object</td><td>Log, side effect, vẫn chain tiếp</td></tr>
+            <tr><td><code>with(x)</code></td><td><code>this</code> = x</td><td>Kết quả lambda</td><td>Gọi nhiều method trên cùng object</td></tr>
+          </tbody>
+        </table>
+
+        <h3>7.2 Inline function</h3>
+        <p>Lambda truyền vào hàm <code>inline</code> được “dán” vào chỗ gọi → ít object lambda, ít overhead trên hot path (ví dụ wrapper API success/error).</p>
+        <p class="footnote"><code>Scope_Functions.md</code>, <code>Kotlin_Idioms_Analysis.md</code>, <code>InlineFun.md</code>.</p>
+      </section>
+
+      <section id="on-tap">
+        <h2>8. Ôn phỏng vấn (rút gọn từ folder)</h2>
+        <ul>
+          <li><strong>Override vs Overload:</strong> ghi đè lớp cha vs cùng tên khác tham số.</li>
+          <li><strong>super:</strong> gọi logic lớp cha trong override.</li>
+          <li><strong>LiveData encapsulation:</strong> <code>MutableLiveData</code> private, expose <code>LiveData</code> read-only.</li>
+          <li><strong>Class vs data class:</strong> hành vi vs holder dữ liệu (equals/copy/toString).</li>
+          <li><strong>Access modifiers:</strong> public (mặc định), internal, protected, private.</li>
+          <li><strong>Class vs object:</strong> nhiều instance vs singleton <code>object</code>.</li>
+          <li><strong>Đa kế thừa:</strong> không đa class; nhiều interface được.</li>
+          <li><strong>ListView vs RecyclerView:</strong> tái sử dụng view, hiệu năng, layout linh hoạt.</li>
+          <li><strong>Chọn nhiều item:</strong> <code>MutableSet</code> index/id.</li>
+          <li><strong>Parse số an toàn:</strong> <code>toIntOrNull()</code>.</li>
+          <li><strong>lateinit vs lazy:</strong> var khởi tạo sau vs val tính lần đầu.</li>
+          <li><strong>Layout:</strong> Frame (chồng), Relative (tương đối), Constraint (linh hoạt, hiệu năng tốt hơn Relative).</li>
+          <li><strong>HOF:</strong> tham số/return là function; ví dụ <code>filter</code>, <code>map</code>.</li>
+          <li><strong>Enum cho input type:</strong> tránh “string tự do”, type-safe.</li>
+        </ul>
+        <p class="footnote">Chi tiết: <code>Android_InterView_Questions.md</code>, <code>Android_Engineers_Questions.md</code>. Link tham khảo trong file gốc.</p>
+      </section>
+
+      <section id="phu-luc">
+        <h2>9. Phụ lục — các file khác trong folder</h2>
+
+        <details open>
+          <summary><code>AI_Prompt.md</code> — học &amp; làm việc với AI</summary>
+          <p>Gợi ý từ khóa: role, step-by-step, so sánh, edge cases, định dạng đầu ra, ràng buộc, trade-off. Framework 4 lớp trong file gốc giúp prompt có cấu trúc.</p>
+        </details>
+
+        <details>
+          <summary><code>Tool_Log_Bug_USD.md</code> — ý tưởng sản phẩm BugSnap</summary>
+          <p>Ý tưởng: 1 click ghi bug, tự tạo report (screenshot, video, môi trường), export Jira/Trello — “invention by integration”.</p>
+        </details>
+
+        <details>
+          <summary><code>hack_thon.md</code> — bài pattern Kotlin (hình tam giác #)</summary>
+          <p>Vòng lặp lồng nhau vs <code>repeat</code>/<code>String.repeat</code> — luyện tư duy lặp và format chuỗi.</p>
+        </details>
+
+        <details>
+          <summary><code>hethonggay.md</code> — khung tư duy hệ thống / lợi thế (không thuần Android)</summary>
+          <p>Nội dung về vị thế, thu nhập, “gần lỗi”, khung 3–6–9. Đặt riêng để không lẫn với kỹ thuật Kotlin/Android.</p>
+        </details>
+
+        <details>
+          <summary><code>RunTime_CompileTime.md</code></summary>
+          <p>File chỉ tham chiếu ảnh minh họa trong repo (<code>/images/runCompile.png</code>). Nhớ khái niệm: compile-time (kiểm tra sớm, tối ưu) vs runtime (khi app chạy).</p>
+        </details>
+
+        <p class="footnote">Liên kết tham khảo bạn đã lưu: Observer pattern, Android Architecture, ViewModel (xem <code>Readme.md</code>).</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

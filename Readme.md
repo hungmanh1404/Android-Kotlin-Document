@@ -1,13 +1,45 @@
+# Main Concept
+
 ![App Screenshot](/images/elementAndroid.png)
 
-1. viewModelScope vs lifecycleScope: 
-Nếu bạn chỉ nhớ “cái này cho ViewModel, cái kia cho Fragment” → chưa đủ
-Phải hiểu scope gắn với cái gì và chết khi nào
-```kt
-Logic / data / API → viewModelScope
-Render / collect / animation → lifecycleScope
-```
-2. BỨC TRANH TỔNG QUÁT – ANDROID + COROUTINE (END-TO-END)
+# Key work Android Kotlin
+
+| Keyword                 | Ánh xạ vật lý             | Ý nghĩa cực ngắn       |
+| ----------------------- | ------------------------- | ---------------------- |
+| `class`                 | Bản thiết kế              | Template tạo object    |
+| `object`                | Nhà thật                  | Instance trong RAM     |
+| `interface`             | Chuẩn ổ điện              | Contract hành vi       |
+| `abstract`              | Khung xe                  | Base chưa hoàn chỉnh   |
+| `inheritance`           | Con thừa hưởng cha        | IS-A                   |
+ `enum`                  | Đèn giao thông            | State cố định          |
+| `data class`            | Form thông tin            | Chứa state/data        |
+| `val`                   | CCCD                      | Không đổi              |
+| `var`                   | Số dư ngân hàng           | Thay đổi được          |
+| `function`              | Máy bán nước              | Input → Output         |
+| `lambda`                | Mini function bỏ túi      | Function ngắn          |
+| `higher-order function` | Giao việc                 | Function nhận function |
+| `coroutine`             | Nhân viên đi lấy hồ sơ    | Async không block      |
+| `suspend`               | Tạm dừng công việc        | Pause không freeze     |
+| `flow`                  | Ống nước dữ liệu          | Stream liên tục        |
+| `nullable ?`            | Có thể rỗng               | Có thể null            |
+| `?.`                    | Gõ cửa trước              | Safe call              |
+| `!!`                    | Cam kết chắc chắn         | Null là crash          |
+| `object singleton`      | Phòng điều khiển duy nhất | 1 instance             |
+| `companion object`      | Văn phòng chung           | Static zone            |
+| `constructor`           | Dây chuyền lắp ráp        | Tạo object             |
+| `repository`            | Kho trung gian            | Quản lý data           |
+| `ViewModel`             | Bộ nhớ sống qua rotate    | State holder           |
+| `Activity`              | Màn hình điều phối        | UI container           |
+| `Fragment`              | Mảnh UI                   | Disposable UI          |
+| `Intent`                | Xe giao hàng              | Chuyển màn hình/data   |
+| `Bundle`                | Balo dữ liệu              | Key-value state        |
+| `Parcelable`            | Đóng kiện hàng            | Serialize nhanh        |
+| `Room`                  | Kho lưu trữ               | Local database         |
+| `DAO`                   | Nhân viên kho             | Query DB               |
+| `LiveData/Flow`         | Camera realtime           | Observe state          |
+
+
+# BỨC TRANH TỔNG QUÁT – ANDROID + COROUTINE (END-TO-END)
 ```
 ┌────────────────────────────────────────────┐
 │                USER ACTION                 │
