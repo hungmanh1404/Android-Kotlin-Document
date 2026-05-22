@@ -6,6 +6,7 @@ https://itviec.com/blog/cau-hoi-phong-van-kotlin/
 # 📘 Android Core Concepts - Tổng Hợp Kiến Thức Cơ Bản
 
 ## Mục lục
+1. [Activity và Fragment giống và khác nhau gì trong Android Kotlin?](#activity-vs-fragment)
 1. [Override vs Overload](#override-vs-overload)
 2. [Từ khóa `super` trong kế thừa](#từ-khóa-super-trong-kế-thừa)
 3. [Val và Var trong LiveData](#val-và-var-trong-livedata)
@@ -23,6 +24,79 @@ https://itviec.com/blog/cau-hoi-phong-van-kotlin/
 15. [ViewGroup: FrameLayout, RelativeLayout, ConstraintLayout](#viewgroup-framelayout-relativelayout-constraintlayout)
 
 ---
+(#override-vs-overload)
+
+## Activity vs Fragment
+**Điểm giống nhau**
+
+- Activity và Fragment đều là thành phần dùng để xây dựng UI trong Android.
+
+***Cả hai đều có thể:***
+
+- Hiển thị giao diện lên màn hình thông qua layout XML hoặc ViewBinding.
+- Có lifecycle riêng.
+- Có các callback lifecycle như onCreate(), onStart(), onResume(), onPause(), onStop(), onDestroy().
+- Xử lý logic UI, sự kiện click, observe data từ ViewModel.
+- Nhận/truyền dữ liệu thông qua Intent, Bundle, arguments, Navigation Component.
+- Có thể tương tác với ViewModel, Repository, API, Database...
+
+Ví dụ đơn giản:
+```kt
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+}
+class HomeFragment : Fragment() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+}
+```
+**Điểm khác nhau cốt lõi**
+| Tiêu chí          | Activity                                         | Fragment                                                                                   |
+| ----------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Bản chất          | Là một màn hình độc lập của app                  | Là một phần UI nằm bên trong Activity                                                      |
+| Phụ thuộc         | Có thể tồn tại độc lập                           | Bắt buộc phải gắn vào Activity                                                             |
+| Window            | Có window riêng                                  | Không có window riêng                                                                      |
+| Khai báo Manifest | Thường phải khai báo trong `AndroidManifest.xml` | Không cần khai báo trong Manifest                                                          |
+| Reuse UI          | Khó reuse hơn                                    | Dễ reuse hơn                                                                               |
+| Navigation        | Điều hướng giữa các Activity bằng `Intent`       | Điều hướng giữa Fragment bằng `FragmentManager` hoặc Navigation Component                  |
+| Context           | Activity là một `Context`                        | Fragment không phải là `Context`, phải lấy qua `requireContext()` hoặc `requireActivity()` |
+| Permission        | Activity có thể trực tiếp request permission     | Fragment phải thông qua API của Fragment hoặc Activity                                     |
+| Lifecycle UI      | Activity có lifecycle gắn với toàn màn hình      | Fragment có 2 lifecycle: Fragment lifecycle và View lifecycle                              |
+| Back stack        | Activity nằm trong task/back stack của hệ thống  | Fragment có back stack riêng trong Activity                                                |
+
+**Giải thích dễ hiểu bằng ánh xạ vật lý**
+
+- Hãy tưởng tượng app Android là một ngôi nhà.
+
+- Activity = căn phòng
+
+- Activity giống như một căn phòng hoàn chỉnh.
+
+```
+Nó có:
+Cửa ra vào riêng.
+Không gian riêng.
+Có thể tự tồn tại.
+Có thể chứa nhiều đồ vật bên trong.
+
+Ví dụ: LoginActivity, MainActivity, PaymentActivity.
+
+Fragment = đồ nội thất / khu vực trong căn phòng
+
+Fragment giống như một khu vực nhỏ hoặc món đồ nội thất trong căn phòng.
+
+Ví dụ:
+
+Khu vực danh sách sản phẩm.
+Khu vực chi tiết sản phẩm.
+Khu vực profile.
+Khu vực setting.
+
+Fragment không thể tự đứng một mình ngoài căn phòng. Nó phải được đặt trong một Activity.
+```
 
 ## Override vs Overload
 **Override**: Ghi đè lại hàm của lớp cha trong lớp con.  

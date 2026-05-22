@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Android Kotlin Interview Q&amp;A</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --paper: #ffffff;
+      --ink: #20242a;
+      --muted: #68717d;
+      --line: #d8dde4;
+      --soft-line: #ebeff3;
+      --teal: #0f766e;
+      --teal-soft: #e7f5f3;
+      --amber: #a15c07;
+      --amber-soft: #fff4df;
+      --red: #b42318;
+      --red-soft: #fff0ee;
+      --code-bg: #111827;
+      --code-ink: #eef2ff;
+      --radius: 8px;
+      --max: 1080px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 220px;
+    }
+
+    .brand strong {
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-bottom: 2px;
+    }
+
+    .nav a {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink);
+      font-size: 13px;
+      padding: 6px 10px;
+      background: var(--paper);
+    }
+
+    .nav a:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    header {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 40px 20px 24px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.06;
+      letter-spacing: 0;
+      max-width: 780px;
+    }
+
+    .lead {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 17px;
+      margin: 0;
+    }
+
+    .summary {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .summary-item {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      min-height: 92px;
+    }
+
+    .summary-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .summary-item strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px 56px;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    aside {
+      position: sticky;
+      top: 78px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      max-height: calc(100vh - 96px);
+      overflow: auto;
+    }
+
+    aside h2 {
+      margin: 0 0 10px;
+      font-size: 14px;
+    }
+
+    aside ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    aside li {
+      margin: 6px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .content {
+      min-width: 0;
+    }
+
+    section {
+      scroll-margin-top: 94px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 22px 0 8px;
+      font-size: 17px;
+      line-height: 1.3;
+      color: var(--teal);
+    }
+
+    p {
+      margin: 8px 0;
+    }
+
+    ul {
+      margin: 8px 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.92em;
+      background: var(--soft-line);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    pre {
+      margin: 12px 0;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      border-radius: var(--radius);
+      overflow-x: auto;
+      padding: 14px 16px;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      padding: 9px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f3f6;
+    }
+
+    .answer {
+      border-left: 4px solid var(--teal);
+      background: var(--teal-soft);
+      padding: 12px 14px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 12px 0;
+    }
+
+    .note {
+      border-left: 4px solid var(--amber);
+      background: var(--amber-soft);
+      padding: 12px 14px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 12px 0;
+    }
+
+    .wrong {
+      border-left: 4px solid var(--red);
+      background: var(--red-soft);
+      padding: 12px 14px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 12px 0;
+    }
+
+    .tagline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 8px;
+      color: var(--muted);
+      font-size: 12px;
+      background: #fafbfc;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .flow span {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      background: #fafbfc;
+      font-size: 14px;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .checklist div {
+      border: 1px solid var(--soft-line);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      background: #fafbfc;
+    }
+
+    .compact p {
+      margin: 5px 0;
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px 40px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      header {
+        padding-top: 28px;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 18px;
+      }
+
+      h2 {
+        font-size: 21px;
+      }
+
+      .checklist {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <strong>Android Kotlin Interview Q&amp;A</strong>
+          <span>Hệ thống câu hỏi kiến thức Android/Kotlin</span>
+        </div>
+        <nav class="nav" aria-label="Điều hướng nhanh">
+          <a href="#oop">OOP</a>
+          <a href="#ui">Layout/UI</a>
+          <a href="#fragment">Fragment</a>
+          <a href="#async">Coroutine</a>
+          <a href="#tools">Git/Firebase</a>
+        </nav>
+      </div>
+    </div>
+
+    <header>
+      <h1>Bộ câu hỏi phỏng vấn Android/Kotlin</h1>
+      <p class="lead">
+        Tài liệu này chuyển bộ ghi chú câu hỏi thành dạng HTML có cấu trúc: mỗi mục gồm câu trả lời ngắn, ví dụ thực tế và điểm cần tránh khi trả lời phỏng vấn.
+      </p>
+    </header>
+
+    <div class="summary" aria-label="Tổng quan nội dung">
+      <div class="summary-item">
+        <span>Nhóm 1</span>
+        <strong>Kotlin, OOP, class, data class</strong>
+      </div>
+      <div class="summary-item">
+        <span>Nhóm 2</span>
+        <strong>Android lifecycle, Activity, Fragment</strong>
+      </div>
+      <div class="summary-item">
+        <span>Nhóm 3</span>
+        <strong>RecyclerView, Retrofit, Coroutine</strong>
+      </div>
+      <div class="summary-item">
+        <span>Nhóm 4</span>
+        <strong>Git, Clean Code, Firebase, Storage</strong>
+      </div>
+    </div>
+
+    <main>
+      <aside>
+        <h2>Mục lục</h2>
+        <ol>
+          <li><a href="#override-overload">Override vs Overload</a></li>
+          <li><a href="#oop">OOP</a></li>
+          <li><a href="#data-class">Data class vs class</a></li>
+          <li><a href="#layout">Layout trong XML</a></li>
+          <li><a href="#replace-add">Replace vs Add Fragment</a></li>
+          <li><a href="#activity-fragment">Activity vs Fragment</a></li>
+          <li><a href="#lifecycle-call">Lifecycle khi có cuộc gọi</a></li>
+          <li><a href="#retrofit">Retrofit</a></li>
+          <li><a href="#recyclerview">RecyclerView</a></li>
+          <li><a href="#coroutine">Coroutine</a></li>
+          <li><a href="#git">Git</a></li>
+          <li><a href="#clean-code">Clean Code</a></li>
+          <li><a href="#firebase">Firebase</a></li>
+          <li><a href="#debug-crash">Debug crash</a></li>
+          <li><a href="#mvvm">MVVM</a></li>
+          <li><a href="#storage">Internal vs External Storage</a></li>
+        </ol>
+      </aside>
+
+      <div class="content">
+        <section id="override-overload">
+          <div class="tagline">
+            <span class="tag">Kotlin</span>
+            <span class="tag">Function</span>
+          </div>
+          <h2>1. Override và Overload khác gì nhau?</h2>
+          <div class="answer">
+            <p><strong>Overload</strong>: cùng tên hàm nhưng khác số lượng tham số, kiểu tham số hoặc thứ tự tham số.</p>
+            <p><strong>Override</strong>: class con viết lại implementation của hàm được khai báo từ class cha hoặc interface.</p>
+          </div>
+          <pre><code class="language-kotlin">fun login(email: String, password: String) {}
+fun login(phone: String) {}
+
+open class Animal {
+    open fun sound() {}
+}
+
+class Dog : Animal() {
+    override fun sound() {
+        println("Gau gau")
+    }
+}</code></pre>
+        </section>
+
+        <section id="oop">
+          <div class="tagline">
+            <span class="tag">OOP</span>
+            <span class="tag">Encapsulation</span>
+            <span class="tag">Polymorphism</span>
+          </div>
+          <h2>2. OOP: đóng gói, đa hình, kế thừa, trừu tượng</h2>
+
+          <h3>Đóng gói</h3>
+          <p>Đóng gói là che giấu dữ liệu bên trong class, không cho bên ngoài sửa trực tiếp nếu việc sửa đó cần kiểm soát điều kiện.</p>
+          <pre><code class="language-kotlin">class User {
+    private var age: Int = 0
+
+    fun updateAge(newAge: Int) {
+        if (newAge &gt; 0) {
+            age = newAge
+        }
+    }
+}</code></pre>
+          <table>
+            <thead>
+              <tr>
+                <th>Modifier</th>
+                <th>Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>public</code></td>
+                <td>Truy cập được từ mọi nơi. Đây là mặc định trong Kotlin.</td>
+              </tr>
+              <tr>
+                <td><code>private</code></td>
+                <td>Chỉ truy cập trong class hoặc file đang khai báo.</td>
+              </tr>
+              <tr>
+                <td><code>protected</code></td>
+                <td>Truy cập trong class đó và class con.</td>
+              </tr>
+              <tr>
+                <td><code>internal</code></td>
+                <td>Truy cập trong cùng module.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Đa hình</h3>
+          <p>Đa hình là cùng một hành động nhưng mỗi đối tượng có cách xử lý khác nhau.</p>
+          <pre><code class="language-kotlin">interface Animal {
+    fun sound()
+}
+
+class Dog : Animal {
+    override fun sound() = println("Gau")
+}
+
+class Cat : Animal {
+    override fun sound() = println("Meo")
+}</code></pre>
+          <div class="wrong">
+            <p><strong>Lưu ý khi phỏng vấn:</strong> ví dụ “Dog có màu lông khác nhau” là khác giá trị thuộc tính, chưa phải đa hình. Đa hình nên nói về cùng method/interface nhưng hành vi khác nhau.</p>
+          </div>
+
+          <h3>Kế thừa</h3>
+          <p>Class con nhận lại thuộc tính hoặc hành vi từ class cha.</p>
+          <pre><code class="language-kotlin">open class BaseAnimal {
+    fun eat() {}
+}
+
+class Husky : BaseAnimal()</code></pre>
+
+          <h3>Trừu tượng</h3>
+          <p>Trừu tượng là chỉ lộ ra hành động cần làm, còn xử lý cụ thể được giấu bên trong implementation.</p>
+          <pre><code class="language-kotlin">interface Payment {
+    fun transfer(amount: Long)
+}
+
+class MomoPayment : Payment {
+    override fun transfer(amount: Long) {
+        // Xử lý chuyển tiền qua Momo
+    }
+}</code></pre>
+        </section>
+
+        <section id="data-class">
+          <div class="tagline">
+            <span class="tag">Kotlin</span>
+            <span class="tag">Model</span>
+          </div>
+          <h2>3. Data class và class khác nhau như thế nào?</h2>
+          <div class="answer">
+            <p><code>data class</code> dùng để biểu diễn dữ liệu. Kotlin tự sinh <code>equals()</code>, <code>hashCode()</code>, <code>toString()</code>, <code>copy()</code> và <code>componentN()</code>.</p>
+            <p><code>class</code> thường dùng khi object có hành vi, trạng thái phức tạp hoặc lifecycle riêng.</p>
+          </div>
+          <pre><code class="language-kotlin">data class UserDto(
+    val id: Int,
+    val name: String
+)
+
+class UserManager {
+    fun syncUser() {}
+}</code></pre>
+          <p>Dùng <code>data class</code> cho model API, request/response, UI state. Dùng <code>class</code> thường cho manager, controller, custom view, repository.</p>
+        </section>
+
+        <section id="layout">
+          <div class="tagline">
+            <span class="tag">Android XML</span>
+            <span class="tag">UI</span>
+          </div>
+          <h2>4. Các loại layout trong XML</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Layout</th>
+                <th>Cách dùng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ConstraintLayout</code></td>
+                <td>Linh hoạt, phù hợp UI phức tạp, ràng buộc view với parent hoặc view khác. Thường tối ưu hơn layout lồng nhau quá nhiều.</td>
+              </tr>
+              <tr>
+                <td><code>LinearLayout</code></td>
+                <td>Sắp xếp view theo chiều dọc hoặc ngang bằng <code>orientation</code>.</td>
+              </tr>
+              <tr>
+                <td><code>FrameLayout</code></td>
+                <td>Các view con xếp chồng lên nhau. Hay dùng làm container cho Fragment.</td>
+              </tr>
+              <tr>
+                <td><code>RelativeLayout</code></td>
+                <td>Sắp xếp dựa trên vị trí tương đối giữa các view. Hiện ít được ưu tiên hơn ConstraintLayout.</td>
+              </tr>
+              <tr>
+                <td><code>ScrollView</code></td>
+                <td>Dùng khi nội dung dài cần cuộn, thường chỉ chứa một child trực tiếp.</td>
+              </tr>
+              <tr>
+                <td><code>CoordinatorLayout</code></td>
+                <td>Dùng với behavior như AppBar, CollapsingToolbar, Snackbar.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="replace-add">
+          <div class="tagline">
+            <span class="tag">Fragment</span>
+            <span class="tag">Transaction</span>
+          </div>
+          <h2>5. So sánh replace và add Fragment</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>API</th>
+                <th>Hành vi</th>
+                <th>Khi dùng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>add()</code></td>
+                <td>Thêm Fragment mới vào container, Fragment cũ vẫn còn nếu không <code>hide()</code> hoặc remove.</td>
+                <td>Dùng khi muốn giữ state Fragment cũ, ví dụ tab.</td>
+              </tr>
+              <tr>
+                <td><code>replace()</code></td>
+                <td>Remove Fragment hiện tại trong container rồi add Fragment mới.</td>
+                <td>Dùng khi chuyển màn và không cần giữ view cũ.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">supportFragmentManager.beginTransaction()
+    .replace(R.id.container, DetailFragment())
+    .addToBackStack(null)
+    .commit()</code></pre>
+          <div class="note">
+            <p>Nếu cần bấm Back quay lại Fragment trước, thêm <code>addToBackStack()</code>.</p>
+          </div>
+        </section>
+
+        <section id="activity-fragment">
+          <div class="tagline">
+            <span class="tag">Activity</span>
+            <span class="tag">Fragment</span>
+          </div>
+          <h2>6. So sánh Activity và Fragment</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Activity</th>
+                <th>Fragment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Là một màn hình độc lập, có lifecycle riêng.</td>
+                <td>Là một phần UI nằm trong Activity.</td>
+              </tr>
+              <tr>
+                <td>Có thể là entry point của app qua Intent/Manifest.</td>
+                <td>Không tự chạy độc lập nếu không được Activity host.</td>
+              </tr>
+              <tr>
+                <td>Thường dùng để host navigation, deep link, permission.</td>
+                <td>Thường dùng để tách từng màn hoặc từng phần giao diện.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="lifecycle-call">
+          <div class="tagline">
+            <span class="tag">Lifecycle</span>
+            <span class="tag">Android OS</span>
+          </div>
+          <h2>7. Đang dùng app có cuộc gọi đến thì lifecycle chạy như thế nào?</h2>
+          <div class="answer">
+            <p>Nếu cuộc gọi che app hoàn toàn, Activity thường đi qua <code>onPause()</code> rồi <code>onStop()</code>. Khi cuộc gọi kết thúc và quay lại app, Activity chạy <code>onRestart()</code>, <code>onStart()</code>, <code>onResume()</code>.</p>
+          </div>
+          <pre><code>App đang foreground
+→ onPause()
+→ onStop() nếu bị che hoàn toàn
+
+Cuộc gọi kết thúc, quay lại app
+→ onRestart()
+→ onStart()
+→ onResume()</code></pre>
+          <div class="note">
+            <p>Nếu app chỉ bị che một phần, có thể chỉ chạy <code>onPause()</code> rồi <code>onResume()</code>.</p>
+          </div>
+        </section>
+
+        <section id="retrofit">
+          <div class="tagline">
+            <span class="tag">Network</span>
+            <span class="tag">Retrofit</span>
+          </div>
+          <h2>8. Retrofit và các phương thức GET, POST, PUT, DELETE</h2>
+          <pre><code class="language-kotlin">interface ApiService {
+    @GET("users")
+    suspend fun getUsers(): List&lt;User&gt;
+
+    @POST("users")
+    suspend fun createUser(@Body user: User): User
+
+    @PUT("users/{id}")
+    suspend fun updateUser(
+        @Path("id") id: Int,
+        @Body user: User
+    ): User
+
+    @DELETE("users/{id}")
+    suspend fun deleteUser(@Path("id") id: Int)
+}</code></pre>
+          <ul>
+            <li><code>GET</code>: lấy dữ liệu.</li>
+            <li><code>POST</code>: tạo mới dữ liệu.</li>
+            <li><code>PUT</code>: cập nhật dữ liệu.</li>
+            <li><code>DELETE</code>: xóa dữ liệu.</li>
+          </ul>
+        </section>
+
+        <section id="recyclerview">
+          <div class="tagline">
+            <span class="tag">RecyclerView</span>
+            <span class="tag">Adapter</span>
+            <span class="tag">DiffUtil</span>
+          </div>
+          <h2>9. RecyclerView</h2>
+          <h3>Thành phần chính</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Thành phần</th>
+                <th>Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Adapter</code></td>
+                <td>Quản lý data, tạo ViewHolder và bind data vào item view.</td>
+              </tr>
+              <tr>
+                <td><code>ViewHolder</code></td>
+                <td>Giữ reference đến view con và bind dữ liệu cho từng item.</td>
+              </tr>
+              <tr>
+                <td><code>LayoutManager</code></td>
+                <td>Quyết định list hiển thị dọc, ngang, grid hoặc staggered grid.</td>
+              </tr>
+              <tr>
+                <td><code>ItemDecoration</code></td>
+                <td>Thêm spacing, divider hoặc decoration cho item.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Các loại notify thường dùng</h3>
+          <ul>
+            <li><code>notifyDataSetChanged()</code>: báo toàn bộ list thay đổi, ít tối ưu.</li>
+            <li><code>notifyItemChanged(index)</code>: update một item.</li>
+            <li><code>notifyItemInserted(index)</code>: thêm một item.</li>
+            <li><code>notifyItemRemoved(index)</code>: xóa một item.</li>
+            <li><code>notifyItemRangeChanged(start, count)</code>: update nhiều item liên tiếp.</li>
+          </ul>
+
+          <div class="answer">
+            <p>Case API load chậm 3 giây: ban đầu show loading hoặc empty state. Khi API trả data, update list trong adapter rồi notify. Cách tốt hơn là dùng <code>ListAdapter + DiffUtil</code> và gọi <code>submitList(newList)</code>.</p>
+          </div>
+          <pre><code class="language-kotlin">viewModel.users.observe(viewLifecycleOwner) { users ->
+    adapter.submitList(users)
+}</code></pre>
+        </section>
+
+        <section id="coroutine">
+          <div class="tagline">
+            <span class="tag">Coroutine</span>
+            <span class="tag">Flow</span>
+            <span class="tag">Dispatcher</span>
+          </div>
+          <h2>10. Coroutine</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Khái niệm</th>
+                <th>Cách hiểu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>launch</code></td>
+                <td>Chạy coroutine không trả kết quả trực tiếp.</td>
+              </tr>
+              <tr>
+                <td><code>async/await</code></td>
+                <td>Chạy coroutine có kết quả trả về, lấy kết quả bằng <code>await()</code>.</td>
+              </tr>
+              <tr>
+                <td><code>withContext</code></td>
+                <td>Chuyển context/dispatcher, thường dùng để chạy IO hoặc CPU task.</td>
+              </tr>
+              <tr>
+                <td><code>Flow</code></td>
+                <td>Stream bất đồng bộ, có thể emit nhiều giá trị theo thời gian.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">viewModelScope.launch {
+    val users = withContext(Dispatchers.IO) {
+        api.getUsers()
+    }
+    _uiState.value = UiState.Success(users)
+}</code></pre>
+          <h3>Dispatcher</h3>
+          <ul>
+            <li><code>Dispatchers.Main</code>: update UI.</li>
+            <li><code>Dispatchers.IO</code>: call API, database, file.</li>
+            <li><code>Dispatchers.Default</code>: xử lý CPU nặng.</li>
+            <li><code>Dispatchers.Unconfined</code>: ít dùng trong app thực tế.</li>
+          </ul>
+        </section>
+
+        <section id="git">
+          <div class="tagline">
+            <span class="tag">Git</span>
+            <span class="tag">Workflow</span>
+          </div>
+          <h2>11. Git</h2>
+          <div class="checklist compact">
+            <div><p><code>git status</code></p><p>Xem trạng thái file.</p></div>
+            <div><p><code>git add .</code></p><p>Stage thay đổi.</p></div>
+            <div><p><code>git commit -m "message"</code></p><p>Tạo commit.</p></div>
+            <div><p><code>git pull</code></p><p>Lấy code mới từ remote.</p></div>
+            <div><p><code>git push</code></p><p>Đẩy code lên remote.</p></div>
+            <div><p><code>git checkout -b feature/name</code></p><p>Tạo branch mới.</p></div>
+            <div><p><code>git merge branch</code></p><p>Gộp branch, có thể tạo merge commit.</p></div>
+            <div><p><code>git rebase branch</code></p><p>Đặt commit của mình lên đầu branch khác.</p></div>
+            <div><p><code>git stash</code></p><p>Cất tạm code chưa commit.</p></div>
+          </div>
+        </section>
+
+        <section id="clean-code">
+          <div class="tagline">
+            <span class="tag">Clean Code</span>
+            <span class="tag">Maintainability</span>
+          </div>
+          <h2>12. Clean Code</h2>
+          <ul>
+            <li>Đặt tên biến, hàm, class rõ nghĩa.</li>
+            <li>Mỗi function nên làm một nhiệm vụ chính.</li>
+            <li>Tránh duplicate code.</li>
+            <li>Không hardcode nếu giá trị có thể thay đổi hoặc tái sử dụng.</li>
+            <li>Tách logic khỏi UI.</li>
+            <li>Class nên có trách nhiệm rõ ràng.</li>
+            <li>Code dễ đọc quan trọng hơn code ngắn nhưng khó hiểu.</li>
+            <li>Follow convention Kotlin/Android của project.</li>
+          </ul>
+        </section>
+
+        <section id="firebase">
+          <div class="tagline">
+            <span class="tag">Firebase</span>
+            <span class="tag">FCM</span>
+            <span class="tag">Crashlytics</span>
+          </div>
+          <h2>16. Firebase</h2>
+          <h3>Firebase Cloud Messaging</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Loại message</th>
+                <th>Đặc điểm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Notification message</td>
+                <td>Android system/Firebase có thể tự hiển thị notification khi app ở background.</td>
+              </tr>
+              <tr>
+                <td>Data message</td>
+                <td>App tự xử lý payload, phù hợp khi cần custom logic.</td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li>Foreground: thường nhận qua <code>onMessageReceived()</code>.</li>
+            <li>Background: notification message thường do system hiển thị; data message cần xử lý cẩn thận vì có giới hạn background.</li>
+          </ul>
+
+          <h3>Dịch vụ Firebase hay gặp</h3>
+          <ul>
+            <li><code>Firestore</code> hoặc <code>Realtime Database</code>: lưu data cloud/realtime.</li>
+            <li><code>Firebase Storage</code>: lưu file, ảnh, video.</li>
+            <li><code>Crashlytics</code>: theo dõi crash production.</li>
+            <li><code>Analytics</code>: tracking event, screen, click.</li>
+            <li><code>Authentication</code>: login Google, email, phone.</li>
+            <li><code>App Distribution</code>: upload APK/AAB cho tester tải về test.</li>
+          </ul>
+        </section>
+
+        <section id="debug-crash">
+          <div class="tagline">
+            <span class="tag">Debug</span>
+            <span class="tag">Crashlytics</span>
+            <span class="tag">Sentry</span>
+          </div>
+          <h2>18. Từng debug crash bằng Sentry, Crashlytics, Logcat</h2>
+          <div class="answer">
+            <p>Cách trả lời phỏng vấn: “Khi có crash, em xem stacktrace trên Crashlytics/Sentry trước, kiểm tra version app, device, OS, breadcrumbs và steps nếu có. Sau đó reproduce local, xem Logcat, đặt breakpoint hoặc thêm log để xác định nguyên nhân rồi fix và verify lại.”</p>
+          </div>
+          <ul>
+            <li><code>Logcat</code>: xem log runtime khi chạy local.</li>
+            <li><code>Crashlytics</code>: xem crash production, stacktrace, device, OS version.</li>
+            <li><code>Sentry</code>: tracking error, breadcrumb, context, user flow.</li>
+          </ul>
+        </section>
+
+        <section id="mvvm">
+          <div class="tagline">
+            <span class="tag">Architecture</span>
+            <span class="tag">MVVM</span>
+          </div>
+          <h2>19. MVVM</h2>
+          <div class="flow" aria-label="Luồng MVVM">
+            <span>View</span>
+            <span>ViewModel</span>
+            <span>Repository/DataSource</span>
+            <span>API/Database</span>
+          </div>
+          <div class="answer">
+            <p>View gửi action như <code>getProfile()</code> cho ViewModel. ViewModel gọi Repository/DataSource để lấy dữ liệu. Khi có kết quả, ViewModel update state. View observe state và render UI.</p>
+          </div>
+          <pre><code>View → ViewModel → Repository/DataSource → API/Database
+View ← State/LiveData/Flow ← ViewModel</code></pre>
+          <p>View không nên xử lý business logic. ViewModel giữ UI state và logic liên quan đến màn hình.</p>
+        </section>
+
+        <section id="storage">
+          <div class="tagline">
+            <span class="tag">Storage</span>
+            <span class="tag">Android</span>
+          </div>
+          <h2>20. Internal Storage và External Storage</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Internal Storage</th>
+                <th>External Storage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Bộ nhớ riêng của app, app khác không truy cập được trực tiếp.</td>
+                <td>Vùng lưu trữ bên ngoài hoặc vùng người dùng có thể thấy, tùy loại file và API.</td>
+              </tr>
+              <tr>
+                <td>Khi uninstall app, data thường bị xóa.</td>
+                <td>Phù hợp lưu ảnh, file download, document hoặc file cần chia sẻ.</td>
+              </tr>
+              <tr>
+                <td>Dùng cho config, cache nội bộ, file private.</td>
+                <td>Một số trường hợp cần permission hoặc dùng Storage Access Framework/MediaStore.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      File HTML này được hệ thống lại từ bộ câu hỏi Android/Kotlin và có thể mở trực tiếp bằng trình duyệt.
+    </footer>
+  </div>
+</body>
+</html>

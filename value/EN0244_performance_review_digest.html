@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Performance Review Digest - Nguyễn Hùng Mạnh</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #5f6b7a;
+      --line: #d8dee8;
+      --soft: #eef2f7;
+      --focus: #2563eb;
+      --good: #0f766e;
+      --warn: #b45309;
+      --violet: #7c3aed;
+      --shadow: 0 12px 30px rgba(24, 31, 50, .08);
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    button, input, select { font: inherit; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(246, 247, 249, .92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: var(--ink);
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+    .brand-title { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nav-links { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links a, .icon-btn {
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid transparent;
+      background: transparent;
+      border-radius: 7px;
+      padding: 7px 10px;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .nav-links a:hover, .icon-btn:hover { border-color: var(--line); background: white; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 26px 18px 54px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+    .hero-main, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .hero-main { padding: 26px; }
+    .eyebrow {
+      color: var(--muted);
+      font-size: .83rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 800;
+      margin: 0 0 8px;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      margin: 0 0 16px;
+      max-width: 920px;
+    }
+    .lead { color: #334155; font-size: 1.06rem; margin: 0; max-width: 76ch; }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 16px;
+    }
+    .meta-item {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 10px;
+      min-height: 78px;
+      background: #fbfcfe;
+    }
+    .meta-label { color: var(--muted); font-size: .8rem; font-weight: 700; }
+    .meta-value { font-weight: 800; margin-top: 4px; overflow-wrap: anywhere; }
+    .notice {
+      margin-top: 16px;
+      border: 1px solid #f2d49b;
+      background: #fff7ed;
+      color: #713f12;
+      border-radius: 7px;
+      padding: 12px 14px;
+      font-weight: 650;
+    }
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 30px 0 12px;
+    }
+    h2 { margin: 0; font-size: 1.45rem; letter-spacing: 0; }
+    .hint { color: var(--muted); margin: 4px 0 0; }
+    .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .summary-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 15px;
+      min-height: 190px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+    .summary-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .summary-title { font-weight: 850; font-size: 1.02rem; }
+    .pill {
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: var(--soft);
+      color: #263548;
+      font-weight: 800;
+      font-size: .82rem;
+      white-space: nowrap;
+    }
+    .bar { height: 9px; border-radius: 999px; background: var(--soft); overflow: hidden; }
+    .bar > span { display: block; height: 100%; border-radius: inherit; width: var(--w); background: var(--c); }
+    .memory { color: #334155; margin: 0; }
+    .focus-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 14px; }
+    .panel { padding: 18px; box-shadow: none; }
+    .brain-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .brain-list li {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+    .num {
+      width: 34px;
+      height: 34px;
+      border-radius: 7px;
+      background: var(--ink);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 850;
+    }
+    .mini-title { font-weight: 850; margin-bottom: 2px; }
+    .actions { margin: 0; padding-left: 18px; color: #334155; }
+    .actions li + li { margin-top: 6px; }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .search {
+      flex: 1 1 260px;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 9px 12px;
+      background: white;
+    }
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 7px;
+      padding: 8px 11px;
+      cursor: pointer;
+      font-weight: 750;
+    }
+    .filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .matrix { display: grid; gap: 10px; }
+    .criterion {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: clip;
+    }
+    .criterion-main {
+      display: grid;
+      grid-template-columns: minmax(210px, .7fr) minmax(280px, 1.25fr) minmax(160px, .55fr);
+      gap: 14px;
+      padding: 14px;
+      align-items: start;
+    }
+    .criterion-name { font-weight: 850; font-size: 1.03rem; }
+    .criterion-sub { color: var(--muted); margin-top: 2px; }
+    .plain { margin: 0; color: #334155; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { border: 1px solid var(--line); background: #fbfcfe; border-radius: 999px; padding: 3px 8px; font-size: .8rem; font-weight: 750; }
+    .scorebox { display: grid; gap: 8px; }
+    .scorebox label { color: var(--muted); font-size: .82rem; font-weight: 750; }
+    .score-control { display: grid; grid-template-columns: 1fr 56px; gap: 8px; align-items: center; }
+    input[type="range"] { width: 100%; accent-color: var(--focus); }
+    .score-num {
+      width: 56px;
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 5px;
+      text-align: center;
+    }
+    details.detail { border-top: 1px solid var(--line); background: #fbfcfe; }
+    details.detail summary { cursor: pointer; padding: 12px 14px; font-weight: 800; }
+    .detail-body { padding: 0 14px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .detail-body h3 { margin: 0 0 8px; font-size: .95rem; }
+    .detail-body ul { margin: 0; padding-left: 18px; }
+    .detail-body li + li { margin-top: 5px; }
+    .original { white-space: pre-wrap; color: #334155; margin: 0; font-size: .94rem; }
+    .score-panel {
+      position: sticky;
+      top: 64px;
+      display: grid;
+      gap: 12px;
+    }
+    .big-score { font-size: 3rem; line-height: 1; font-weight: 900; letter-spacing: 0; }
+    .score-label { color: var(--muted); font-weight: 750; }
+    .score-rows { display: grid; gap: 8px; }
+    .score-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+    .timeline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .time-card { background: white; border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+    .time-title { font-weight: 850; }
+    .time-date { color: var(--muted); margin-top: 4px; }
+    .footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 30px; padding-top: 16px; font-size: .9rem; }
+    .empty { display: none; border: 1px dashed var(--line); border-radius: 8px; padding: 18px; color: var(--muted); background: white; }
+    @media (max-width: 980px) {
+      .hero, .focus-grid { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .criterion-main { grid-template-columns: 1fr; }
+      .score-panel { position: static; }
+    }
+    @media (max-width: 640px) {
+      .nav { align-items: flex-start; flex-direction: column; }
+      .nav-links { justify-content: flex-start; }
+      .wrap { padding-inline: 12px; }
+      .hero-main { padding: 20px; }
+      .meta-grid, .cards, .detail-body, .timeline { grid-template-columns: 1fr; }
+      .section-title { display: block; }
+      .toolbar { align-items: stretch; }
+      .filter-btn { flex: 1 1 auto; }
+    }
+    @media print {
+      .topbar, .toolbar, .scorebox, .icon-btn { display: none !important; }
+      body { background: white; }
+      .wrap { max-width: none; padding: 0; }
+      .hero-main, .panel, .summary-card, .criterion, .time-card { box-shadow: none; break-inside: avoid; }
+      details.detail { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <nav class="nav" aria-label="Điều hướng">
+      <div class="brand"><div class="brand-mark">PR</div><div class="brand-title">Performance Review Digest</div></div>
+      <div class="nav-links">
+        <a href="#summary">Tổng quan</a>
+        <a href="#focus">Cách đọc</a>
+        <a href="#matrix">Tiêu chí</a>
+        <a href="#timeline">Check-in</a>
+        <button class="icon-btn" type="button" id="printBtn" title="In hoặc lưu PDF">In/PDF</button>
+      </div>
+    </nav>
+  </div>
+  <main class="wrap">
+    <section class="hero" id="top">
+      <div class="hero-main">
+        <p class="eyebrow">Self evaluation - Junior II Mobile Engineer</p>
+        <h1>Nguyễn Hùng Mạnh (EN0244)</h1>
+        <p class="lead">Bản này gom file Excel thành một trang dễ đọc: nhìn trọng số trước, hiểu điều cần chứng minh, rồi mở chi tiết khi cần viết self-evaluation hoặc chuẩn bị bằng chứng.</p>
+        <div class="notice">Workbook hiện chưa có điểm tự đánh giá/evaluator ở từng tiêu chí; các ô điểm tổng trong Excel là công thức. Phần “tự chấm thử” trong HTML chỉ để ước lượng và suy nghĩ, không ghi ngược vào Excel.</div>
+      </div>
+      <aside class="panel meta-grid" aria-label="Thông tin đánh giá">
+        <div class="meta-item"><div class="meta-label">Team</div><div class="meta-value">Mobile</div></div>
+        <div class="meta-item"><div class="meta-label">Evaluator</div><div class="meta-value">Nguyễn Thiện Vinh (EN0016)</div></div>
+        <div class="meta-item"><div class="meta-label">Kỳ đánh giá</div><div class="meta-value">03/03/2026 - 03/08/2026</div></div>
+        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value">30/03/2026</div></div>
+        <div class="meta-item"><div class="meta-label">Trạng thái</div><div class="meta-value">Success Metrics - Completed</div></div>
+        <div class="meta-item"><div class="meta-label">Vai trò</div><div class="meta-value">Junior II / Mobile</div></div>
+      </aside>
+    </section>
+
+    <section id="summary">
+      <div class="section-title">
+        <div><h2>Tổng quan trọng số</h2><p class="hint">Muốn tối ưu điểm, đọc theo trọng số từ lớn đến nhỏ.</p></div>
+      </div>
+      <div class="cards" id="summaryCards"></div>
+    </section>
+
+    <section id="focus">
+      <div class="section-title">
+        <div><h2>Cách đọc cho dễ vào đầu</h2><p class="hint">Chỉ cần nhớ 4 câu này trước khi đi vào từng tiêu chí.</p></div>
+      </div>
+      <div class="focus-grid">
+        <div class="panel">
+          <ul class="brain-list" id="brainList"></ul>
+        </div>
+        <aside class="panel score-panel">
+          <div>
+            <div class="score-label">Điểm tự chấm thử</div>
+            <div class="big-score"><span id="overallScore">0.0</span>/10</div>
+            <p class="hint">Kéo thanh điểm ở từng tiêu chí. Công thức dùng đúng trọng số trong Excel.</p>
+          </div>
+          <div class="score-rows" id="scoreRows"></div>
+          <button class="filter-btn" type="button" id="resetScores">Reset điểm thử</button>
+        </aside>
+      </div>
+    </section>
+
+    <section id="matrix">
+      <div class="section-title">
+        <div><h2>Ma trận tiêu chí</h2><p class="hint">Mỗi dòng trả lời 3 câu: tiêu chí này là gì, chiếm bao nhiêu điểm, nên chuẩn bị bằng chứng gì.</p></div>
+      </div>
+      <div class="toolbar">
+        <input class="search" id="searchBox" type="search" placeholder="Tìm theo tiêu chí, metric, bằng chứng..." aria-label="Tìm kiếm tiêu chí">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="matrix" id="criteriaList"></div>
+      <div class="empty" id="emptyState">Không tìm thấy tiêu chí phù hợp.</div>
+    </section>
+
+    <section id="timeline">
+      <div class="section-title">
+        <div><h2>Monthly check-in</h2><p class="hint">Mốc thời gian lấy từ sheet Monthly Check-In trong workbook.</p></div>
+      </div>
+      <div class="timeline" id="timelineList"></div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <div><h2>Ghi chú từ workbook</h2><p class="hint">Khung năng lực gốc cho Junior Developer.</p></div>
+      </div>
+      <div class="panel">
+        <p><strong>Description:</strong> A junior developer can write code in one languages but he/ she is not really involved in the whole Software Development Lifecycle</p>
+        <p><strong>Responsibility:</strong></p>
+        <ul><li>Follow and Apply the guidance</li><li>Work under supervision and direction</li><li>Need training and excessive quality control</li></ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Tạo từ file: <strong>EN0244_EIS_SelfEvaluation_Nguyễn Hùng Mạnh_Mobile Engineer_Junior II_EC 08_2026 - Performance Review.xlsx</strong>. Ngày tạo HTML: 21/05/2026.
+    </footer>
+  </main>
+
+  <script id="review-data" type="application/json">{"meta": {"member": "Nguyễn Hùng Mạnh (EN0244)", "team": "Mobile", "evaluator": "Nguyễn Thiện Vinh (EN0016)", "periodStart": "03/03/2026", "periodEnd": "03/08/2026", "deadline": "30/03/2026", "status": "Success Metrics - Completed", "description": "A junior developer can write code in one languages but he/ she is not really involved in the whole Software Development Lifecycle", "responsibility": ["Follow and Apply the guidance", "Work under supervision and direction", "Need training and excessive quality control"]}, "sections": [{"name": "Technical", "vn": "Kỹ thuật", "memory": "Chứng minh bạn làm được Android/Kotlin chắc nền, code sạch, test và debug có phương pháp.", "color": "#2563eb", "weight": 0.5, "criteria": [{"id": "programming-capability", "name": "Programming Capability", "vn": "Năng lực lập trình", "plain": "Nắm Kotlin cơ bản đến ứng dụng thực tế, hiểu Android core, UI, navigation, API, storage, lifecycle và thư viện phổ biến.", "evidence": ["2-3 PR/module có dùng Kotlin + Android core", "Ví dụ call REST/GraphQL, Coroutine, Room/SharedPreferences", "Demo hoặc ghi chú về UI XML/Compose, navigation, lifecycle"], "description": "- Have knowledge of fundamental programming concepts ( SOLID, DRY, KISS )\n- Knowledge of Mobile Development: Understanding mobile development concepts like navigation, state management, and life cycle.Understanding of\n- RESTful APIs / GraphQL\n- Can build any layout/ custom component ( medium ).\n- Can implement and use third party library with Intermediate knowledge.\n- Knowledge common feature for mobile development: Notification, DeepLink, Core Location, etc.\n- Good understanding of How GIT works\nReact-native:\n- Proficiency in JavaScript. Additionally, familiarity with typescript may be beneficial as well.\n- Familiarity with React: React Native uses React to build user interfaces, so you should have a good grasp of React concepts like components, state, and props. Can build layout/ custom component ( basic-medium ).\niOS:\n- Proficiency in Swift, the primary programming language for iOS development, is essential. Additionally, familiarity with Objective-C may be beneficial as well. You should be comfortable with object-oriented programming concepts, data structures, and algorithms.\n- Knowledge of Mobile Development: Understanding mobile development concepts like navigation, and life circle, etc...\n- iOS Development Tools: Understanding of Xcode, Apple's integrated development environment (IDE) for iOS development, is crucial. You should be comfortable with using Xcode for coding, debugging, and testing iOS applications.\n- Understanding of iOS Frameworks: Basic Knowledge of iOS frameworks like UIKit, Foundation, and concepts: View, View Controller, Storyboard, Delegate Pattern, AutoLayout, Networking, Asynchronous Programming.\nAndroid:\n- Proficiency in Kotlin, the primary programing language for Android development, is essential. Additionally, familiarity with java may be beneficial as well. You should be comfortable with object-oriented programming concepts, data structures, and algorithms.\n- Knowledge of Mobile Development: Understanding mobile development concepts like navigation, state management, and life cycle.\n- Android Development Tools: Understanding of Android Studio, Google's integrated development environment (IDE) for Android development, is crucial. You should be comfortable with using Android Studio for coding, debugging, and testing iOS applications.\n- Understanding of Android Frameworks: Basic Knowledge of Android SDK and concepts like Activity, Layouts, Views, Intents, Fragments, Activity Life circle, Networking, etc.", "metricsText": "Koitlin language:\n+ Biến và kiểu dữ liệu: var, val, Int, String, Boolean, List, Map.\n+ Cấu trúc điều kiện: if-else, when, for loop, while loop.\n+ Hàm: Cách khai báo hàm, tham số, giá trị trả về, hàm.\n+ Lớp và đối tượng: class, object, constructor, inheritance (kế thừa), interface.\n+ Null Safety: cách xử lý null trong Kotlin, safe calls (?.), not-null assertions (!!).\n+ Extension Functions: Cách mở rộng chức năng của lớp.\n+ Array, List\n+ Exception Handling(try catch)\n+ Standard Library Usage: Explore Kotlin's standard library functions that make coding easier, such as let, apply, run, also, takeIf, and takeUnless\n\nAndroid:\n+ Hiểu biết sâu về các thành phần cơ bản của Android như  Activity, Layouts, Views, Intents, Fragments, Activity Life circle, Networking, etc..\n+ Hiểu được luồng làm việc của acitvity, fragment, model và flow theo chuẩn của android .\n+ Hiểu và apply navigation.\n+ Hiểu và apply binding.\n+ Hiểu cách Custom View, Sub List funtion.\n+ Hiểu Gradle android\n+ Google service, firebase service.\n+ Hiểu về Coroutine + RX.\n+ Hiểu và có thể implement third library ( cách implement third party module)\n+ Hiểu về storage: internal storage, external storage, database is plus point\n+ Nắm cơ bản về canvas (Nó ứng dụng mạnh mẽ cho tất cả các view khó, Nếu thành thạo có thể xử lí hầu hết tất cả các view yêu cầu)\n+ Nắm cơ bản được cách dùng  services của Android(bluetooth, wifi, permisions, phone call, sms, micro..)\n+ Hiểu và  implement call rest api với Retrofit\n+ Hiểu và implement  call graphql với Apollo Graphql.\n+ Tạo  UI  theo yêu cầu bằng XML hoặc Compose.\n+ Hiểu và có thể implement lib: Notification, deeplink, core location, file access.\n+ Backstack của activity, fragment (add, replace fragment).\n+ Code xml (sử dụng linearlayout, relative layout, constrainlayout) và custom view.\n+ Hiểu life circle của app Android  life circle component, app state, app life circle.\n+ Handle bất đồng bộ bằng Coroutine library\n+ Nắm vững và có thể sử dụng hiểu quả các local storage như là Room, SharedPreferences.\n+ Rèn luyện tư duy của mình cho có  hệ thống(system thinking)", "metrics": ["Koitlin language:", "Biến và kiểu dữ liệu: var, val, Int, String, Boolean, List, Map.", "Cấu trúc điều kiện: if-else, when, for loop, while loop.", "Hàm: Cách khai báo hàm, tham số, giá trị trả về, hàm.", "Lớp và đối tượng: class, object, constructor, inheritance (kế thừa), interface.", "Null Safety: cách xử lý null trong Kotlin, safe calls (?.), not-null assertions (!!).", "Extension Functions: Cách mở rộng chức năng của lớp.", "Array, List", "Exception Handling(try catch)", "Standard Library Usage: Explore Kotlin's standard library functions that make coding easier, such as let, apply, run, also, takeIf, and takeUnless", "Android:", "Hiểu biết sâu về các thành phần cơ bản của Android như  Activity, Layouts, Views, Intents, Fragments, Activity Life circle, Networking, etc..", "Hiểu được luồng làm việc của acitvity, fragment, model và flow theo chuẩn của android .", "Hiểu và apply navigation.", "Hiểu và apply binding.", "Hiểu cách Custom View, Sub List funtion.", "Hiểu Gradle android", "Google service, firebase service.", "Hiểu về Coroutine + RX.", "Hiểu và có thể implement third library ( cách implement third party module)", "Hiểu về storage: internal storage, external storage, database is plus point", "Nắm cơ bản về canvas (Nó ứng dụng mạnh mẽ cho tất cả các view khó, Nếu thành thạo có thể xử lí hầu hết tất cả các view yêu cầu)", "Nắm cơ bản được cách dùng  services của Android(bluetooth, wifi, permisions, phone call, sms, micro..)", "Hiểu và  implement call rest api với Retrofit", "Hiểu và implement  call graphql với Apollo Graphql.", "Tạo  UI  theo yêu cầu bằng XML hoặc Compose.", "Hiểu và có thể implement lib: Notification, deeplink, core location, file access.", "Backstack của activity, fragment (add, replace fragment).", "Code xml (sử dụng linearlayout, relative layout, constrainlayout) và custom view.", "Hiểu life circle của app Android  life circle component, app state, app life circle.", "Handle bất đồng bộ bằng Coroutine library", "Nắm vững và có thể sử dụng hiểu quả các local storage như là Room, SharedPreferences.", "Rèn luyện tư duy của mình cho có  hệ thống(system thinking)"], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.25, "overallWeight": 0.125, "row": 10, "selfScore": "", "evaluatorScore": ""}, {"id": "quality-of-code", "name": "Quality of Code", "vn": "Chất lượng code", "plain": "Code đúng mục đích, dễ đọc, dễ maintain, MR rõ thông tin và không lặp lại lỗi đã được góp ý.", "evidence": ["MR có mô tả task, ảnh/video test, checklist", "Ví dụ function đặt tên rõ, ít duplicate, dễ mở rộng", "Danh sách lỗi review đã ghi chú và đã tránh lặp lại"], "description": "\"- Ensure their code following guidance, conding conventions ( functionality, readability and maintainability, efficiency and optimization, reusability and edge cases, with errors in mind )\n    ex:\n      + Functionality:\n            - Does the code achieve its intended purpose?  Test the functionality thoroughly to identify bugs or areas where the code might not behave as expected under certain conditions.\n            - Edge Cases:  Are there edge cases or unexpected inputs that could cause the code to break?  Junior developers might miss these, so consider including some in your evaluation.\n            - Does the UI match the mockups or design specs? Ensure the visual elements (layout, colors, fonts) align with the intended design.\n            - Interactive elements: Do buttons, forms, and other interactive elements function correctly and provide the expected user experience? Test these elements thoroughly across different browsers and devices.\n            - Responsiveness: Does the website adapt appropriately to different screen sizes (desktop, tablet, mobile)? Responsive design is crucial for modern web development.\n      + Readability and Maintainability:\n            - Clarity and Structure:  Is the code well-formatted, indented, and easy to read? Does it follow consistent naming conventions?  Clean code is easier to understand, maintain, and modify in the future, even by someone unfamiliar with the codebase.\n            - Meaningful Variable and Function Names: Are variable and function names descriptive and reflect their purpose? This improves readability and makes the code more self-documenting.\n            - Comments: Are comments used effectively to explain complex logic or non-obvious parts of the code?  Comments should clarify the code's intent, not simply repeat what the code does.\n      + Efficiency and Optimization:\n            - Are there opportunities to improve the code's performance?  While optimization might not be the top priority for junior developers, consider if there are glaring inefficiencies that could be addressed.\n            - Resource Usage: Does the code use memory and processing power efficiently?  This might not be a major concern for simple applications, but it's good practice to be mindful of resource usage.\n      + Reference source for checking conventions\n           - 80% follow project team/ functional team coding conventions\n           - Practical usage of tools/techniques for improving code quality ( eslint, sonarlint, .. )\n           - Having good understanding of technical's domain good practices/ techniques on improving code quality\n\n- Proactively ask for help/peer review from other more senior developers within project team or functional team\n\n- 70% code should be reviewed by other senior member to ensure quality\n\nFocus point\n\n- Focus on growth: The goal is to identify areas where the junior developer can improve their skills. Provide constructive feedback and suggest resources (online tutorials, documentation) to help them learn.\n- Potential over perfection: Don't expect perfectly optimized code. Look for a foundational understanding of best practices and a willingness to learn.\n- Communication is key: Discuss the code with other developers as much as possible. This can reveal their thought process, problem-solving approach, and areas where they might need clarification.", "metricsText": "+ Follow 100% coding convertion.\n+ Code function đúng mục đích , dễ đọc dễ hiểu, có thể mở rộng, maintain.\n+ Viết function rõ ràng, có description đầy đủ.\n+ Tạo MR có đầy đủ thông tin của task liên quan.\n+ Code không được lặp đi lặp lại một vấn đề mà đã được góp ý trước đó. Phải ghi chép để tránh gặp vấn đề tương tự.", "metrics": ["Follow 100% coding convertion.", "Code function đúng mục đích , dễ đọc dễ hiểu, có thể mở rộng, maintain.", "Viết function rõ ràng, có description đầy đủ.", "Tạo MR có đầy đủ thông tin của task liên quan.", "Code không được lặp đi lặp lại một vấn đề mà đã được góp ý trước đó. Phải ghi chép để tránh gặp vấn đề tương tự."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.25, "overallWeight": 0.125, "row": 11, "selfScore": "", "evaluatorScore": ""}, {"id": "testing", "name": "Testing", "vn": "Kiểm thử", "plain": "Tự test đủ yêu cầu trên emulator hoặc device, biết so sánh behavior giữa platform và có hướng automation khi cần.", "evidence": ["Test note theo từng acceptance criteria", "Screenshot/video test trên emulator hoặc real device", "Case so sánh Android/iOS/Web nếu cùng flow"], "description": "Knows the testing pyramid and how to writes unit tests, sometimes with help from more senior engineers.\n\n Do their self-test carefully before request to merge to make sure\n - All requirements fulfilled\n - Coding convention followed", "metricsText": "- Những yêu cầu của tasks đều được testing trên emulator hoặc real devices.\n- Đảm bảo các tasks đều đủ yêu cầu.\n- Thực hiện thao tác automation test với appium, test UI chạy trực tiếp trên máy ảo để test theo id.\n - Compare behavior giữa các nền tảng iOS, Android và Web khi làm cùng một luồng logic, bussines để cho đồng bộ.", "metrics": ["Những yêu cầu của tasks đều được testing trên emulator hoặc real devices.", "Đảm bảo các tasks đều đủ yêu cầu.", "Thực hiện thao tác automation test với appium, test UI chạy trực tiếp trên máy ảo để test theo id.", "Compare behavior giữa các nền tảng iOS, Android và Web khi làm cùng một luồng logic, bussines để cho đồng bộ."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 12, "selfScore": "", "evaluatorScore": ""}, {"id": "debuging", "name": "Debuging", "vn": "Debug", "plain": "Xác định lỗi ở đâu, dùng tool debug, biết lỗi thường gặp và khoanh vùng file/module liên quan.", "evidence": ["Một bug đã debug: triệu chứng, giả thuyết, nguyên nhân, fix", "Logcat/breakpoint/network inspector minh họa", "Ghi chú pattern lỗi thường gặp trong dự án"], "description": "Understands the basics of debugging and the tools used for it, sometimes with help from more seinor engineers in following criteria\n\n- Identifying Errors: Pinpoint the root cause of errors effectively,  involves understanding error messages, using developer tools, and replicating the issue consistently.\n- Debugging Techniques:  Utilize a systematic approach to debugging (e.g., using console logs, breakpoints, debugging tools: Flipper, Xcode, AndroidStudio, etc ). Try to demonstrate thought process and can break down the problem logically.\n- Basic Knowledge of Common Issues:  Familiar with common mobile development errors (e.g., code errors, style issues). While they might not have encountered every issue, a basic understanding demonstrates their learning and troubleshooting skills.\n- Logical Thinking: Can explain thought process and the steps taken to debug the issue. Look for a logical approach that involves isolating the problem, testing hypotheses, and refining solutions.\n- Resourcefulness: Know how to find resources to help them debug (e.g., online documentation, Stack Overflow) and having ability to effectively search for solutions is a valuable debugging skill.\n- Adaptability: Can adjust their approach if initial solutions don't work. Debugging is iterative, so see if they can learn from their mistakes and try different strategies.\n- Asking Clarifying Questions: Do ask relevant questions to understand the symptoms and context of the bug?  Effective communication is key to diagnosing issues accurately.\n- Collaboration: Can explain the bug and their debugging process to others (even if they haven't solved it yet). This demonstrates their understanding of the problem and their ability to collaborate on solutions.\n- Willingness to Learn:  Are they open to suggestions and feedback during the debugging process?  Look for a growth mindset and a desire to learn from more experienced developers.", "metricsText": "- Xác định được lỗi xảy ra ở đâu.\n- Sử dụng các tool hỗ trợ debug.\n- Biết được Những lỗi thường gặp.\n- Phán đoán được bug xảy ra ở đâu, file nào.", "metrics": ["Xác định được lỗi xảy ra ở đâu.", "Sử dụng các tool hỗ trợ debug.", "Biết được Những lỗi thường gặp.", "Phán đoán được bug xảy ra ở đâu, file nào."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 13, "selfScore": "", "evaluatorScore": ""}, {"id": "code-understanding-review-and-documentation", "name": "Code Understanding, Review and Documentation", "vn": "Hiểu code, review, tài liệu", "plain": "Hiểu cấu trúc project, đọc được code của người khác và chủ động viết tài liệu ngắn cho feature/module.", "evidence": ["Sơ đồ module/folder của app", "README hoặc note hướng dẫn setup/feature", "Ví dụ bạn review hoặc giải thích một flow business quan trọng"], "description": "Is able to read and understand the codes and its basic context within team's domain with help from more senior engineers.\n\nProactively take part in contributing to project team's technical documentation with review from higher level member or cross-service member within their team ( eg: QA member, Leader, .. )\n- Business documentation\n- Feature tutorials", "metricsText": "- Nắm được cấu trúc thư mục, các module được sử dụng trong ứng dụng.\n - Có thể hiểu code của các thành viên khác trong dự án.\n - Có thử chủ động viết document(readme, mô tả các dùng tính năng)\n - Tự setup cấu trúc thư mục cho dự án demo\n - Nắm được các luồng bussines, luồng xử lý quan trọng của ứng dụng, web.", "metrics": ["Nắm được cấu trúc thư mục, các module được sử dụng trong ứng dụng.", "Có thể hiểu code của các thành viên khác trong dự án.", "Có thử chủ động viết document(readme, mô tả các dùng tính năng)", "Tự setup cấu trúc thư mục cho dự án demo", "Nắm được các luồng bussines, luồng xử lý quan trọng của ứng dụng, web."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 14, "selfScore": "", "evaluatorScore": ""}, {"id": "software-architecture", "name": "Software Architecture", "vn": "Kiến trúc phần mềm", "plain": "Viết function ngắn gọn, tái sử dụng, không duplicate và tuân thủ pattern sẵn có của source.", "evidence": ["PR refactor nhỏ giúp giảm duplicate", "Ví dụ áp dụng pattern có sẵn trong project", "Giải thích vì sao function/module dễ maintain hơn"], "description": "- Is aware of overall service architecture.\n\n- Designs basic functions with an awareness of overall service architecture, avoiding duplication across codebases and interface-breaking changes.", "metricsText": "- Viết function rõ ràng, ngắn gọn, dễ maintain và tái sử dụng\n- Không lặp code\n- Tuân thủ design parttern của source code.", "metrics": ["Viết function rõ ràng, ngắn gọn, dễ maintain và tái sử dụng", "Không lặp code", "Tuân thủ design parttern của source code."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 15, "selfScore": "", "evaluatorScore": ""}, {"id": "security", "name": "Security", "vn": "Bảo mật", "plain": "Không leak source/key/data nhạy cảm, chọn thư viện an toàn, cập nhật dependency và lưu trữ local đúng cách.", "evidence": ["Checklist không hardcode secret/API key", "Ví dụ xử lý dữ liệu nhạy cảm không dùng storage không mã hóa", "Ghi chú review bảo mật trong MR"], "description": "Understands the importance of security:\n- Avoid sharing source code on public platforms like GitHub to prevent unauthorized access by individuals or entities outside the project team.\n- Safeguard application keys or sensitive information such as API keys, database credentials, or encryption keys to prevent potential exploitation or misuse by unauthorized users.", "metricsText": "- Đối với Công ty: Luôn tuân thủ quy tắc Security công ty\n - Đối với dự án:\n + Tuân thủ nguyên tắc bảo mật dự án không để leak thông tin dự án của khách hàng\n + Đề xuất các thư viện và công cụ an toàn: Sử dụng các thư viện phổ biến và được bảo trì tốt cho các dự án của bạn.\n + Thường xuyên cập nhật các module: Thường xuyên cập nhật lên các phiên bản mới nhất để khắc phục mọi sự cố bảo mật đã biết.\n + Bảo vệ mã nguồn: tránh chia sẻ ra public repo hoặc thành viên không thuộc dự án.\n + Bảo vệ thông tin nhạy cảm: Không được hardcode các data nhạy cảm trong source code\n + Lưu trữ an toàn:  Các thông tin nhạy cảm nếu lưu xuống local phải được mã hóa, không được sử dụng AsyncStorage cho dữ liệu nhạy cảm vì nó không được mã hóa.\n + Review code cẩn thận: Luôn kiểm tra các vấn đề bảo mật thường gặp trong quá trình review code, nếu phát hiện các issue liên quan đến bảo mật và report cho team thì sẽ là điểm cộng", "metrics": ["Đối với Công ty: Luôn tuân thủ quy tắc Security công ty", "Đối với dự án:", "Tuân thủ nguyên tắc bảo mật dự án không để leak thông tin dự án của khách hàng", "Đề xuất các thư viện và công cụ an toàn: Sử dụng các thư viện phổ biến và được bảo trì tốt cho các dự án của bạn.", "Thường xuyên cập nhật các module: Thường xuyên cập nhật lên các phiên bản mới nhất để khắc phục mọi sự cố bảo mật đã biết.", "Bảo vệ mã nguồn: tránh chia sẻ ra public repo hoặc thành viên không thuộc dự án.", "Bảo vệ thông tin nhạy cảm: Không được hardcode các data nhạy cảm trong source code", "Lưu trữ an toàn:  Các thông tin nhạy cảm nếu lưu xuống local phải được mã hóa, không được sử dụng AsyncStorage cho dữ liệu nhạy cảm vì nó không được mã hóa.", "Review code cẩn thận: Luôn kiểm tra các vấn đề bảo mật thường gặp trong quá trình review code, nếu phát hiện các issue liên quan đến bảo mật và report cho team thì sẽ là điểm cộng"], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 16, "selfScore": "", "evaluatorScore": ""}]}, {"name": "Delivery", "vn": "Giao hàng", "memory": "Chứng minh bạn hiểu task, biết chia nhỏ ưu tiên và giữ cam kết delivery.", "color": "#0f766e", "weight": 0.2, "criteria": [{"id": "business-context-understanding", "name": "Business Context Understanding", "vn": "Hiểu business context", "plain": "Hiểu task đang làm và nắm phần lớn yêu cầu khách hàng trước khi chọn cách code.", "evidence": ["Tóm tắt requirement bằng lời của bạn", "Mapping requirement -> technical approach", "Câu hỏi đã hỏi để làm rõ nghiệp vụ"], "description": "Have basic understanding of business problems and situations\n- Overall business of the application\n- Know what issue that the application is trying to resolve\n\nAnalyze their module/feature/task business requirement with > 80% thorough understanding and need help from more senior member on what and how to achieve the requirement", "metricsText": "- Hiểu rõ được những tasks mình đang làm.\n- Hiểu trên (80%) yêu cầu của khách hàng để đem ra cách giải quyết code.", "metrics": ["Hiểu rõ được những tasks mình đang làm.", "Hiểu trên (80%) yêu cầu của khách hàng để đem ra cách giải quyết code."], "section": "Delivery", "sectionVn": "Giao hàng", "partWeight": 0.2, "innerWeight": 0.25, "overallWeight": 0.05, "row": 20, "selfScore": "", "evaluatorScore": ""}, {"id": "task-breakdown-prioritisation-dependencies", "name": "Task Breakdown, Prioritisation, dependencies", "vn": "Chia nhỏ, ưu tiên, dependency", "plain": "Biết chia task, chọn việc ưu tiên trước, cập nhật Jira và báo sớm issue ảnh hưởng timeline.", "evidence": ["Task breakdown/Jira update rõ trạng thái", "Ví dụ trade-off ưu tiên đã báo PM/Client/EM", "Danh sách dependency/blocker và cách xử lý"], "description": "- Know value of right sizing tasks to enable continuous integration and incremental delivery.\n\n- Know the task prioritisation and act accordingly.\n\n- Understands dependencies and note them together with other task prioritization", "metricsText": "+ Xác định được các nhiệm vụ nào ưu tiên hơn để triển khai trước, bên cạnh đó cũng sắp xếp thời gian phù hợp để triển khai các nhiệm có độ ưu tiên thấp hợp.\n+ Chủ động cập nhập trạng thái của task ( Jira ).\n+ Chủ động báo cáo với Client, PM, EM các issue Liên quan đến độ ưu tiên của task để Đảm bảo hoàn thành đúng thời gian.", "metrics": ["Xác định được các nhiệm vụ nào ưu tiên hơn để triển khai trước, bên cạnh đó cũng sắp xếp thời gian phù hợp để triển khai các nhiệm có độ ưu tiên thấp hợp.", "Chủ động cập nhập trạng thái của task ( Jira ).", "Chủ động báo cáo với Client, PM, EM các issue Liên quan đến độ ưu tiên của task để Đảm bảo hoàn thành đúng thời gian."], "section": "Delivery", "sectionVn": "Giao hàng", "partWeight": 0.2, "innerWeight": 0.5, "overallWeight": 0.1, "row": 21, "selfScore": "", "evaluatorScore": ""}, {"id": "reliability-delivery-accountability", "name": "Reliability, delivery accountability", "vn": "Độ tin cậy khi delivery", "plain": "Tham gia daily, cập nhật tiến độ thường xuyên, hoàn thành đúng cam kết hoặc báo sớm khi có rủi ro.", "evidence": ["Log cập nhật tiến độ hoặc daily note", "Task hoàn thành đúng deadline", "Một tình huống báo rủi ro sớm và hướng xử lý"], "description": "- Has daily conversation with the team about the progress of their work.\n\n- Delivers on commitments with a sense of urgency.", "metricsText": "+ Luôn tuân thủ/ tham gia các buổi daily meeting của project.\n+ Chủ động / thường xuyên cập nhập tiện độ project với team và PM.\n+ Hoàn thành công việc như đã cam kết, nếu có vấn đề phát sinh phải kịp thời báo cáo với PM.", "metrics": ["Luôn tuân thủ/ tham gia các buổi daily meeting của project.", "Chủ động / thường xuyên cập nhập tiện độ project với team và PM.", "Hoàn thành công việc như đã cam kết, nếu có vấn đề phát sinh phải kịp thời báo cáo với PM."], "section": "Delivery", "sectionVn": "Giao hàng", "partWeight": 0.2, "innerWeight": 0.25, "overallWeight": 0.05, "row": 22, "selfScore": "", "evaluatorScore": ""}]}, {"name": "Communication and Collaboration", "vn": "Giao tiếp & hợp tác", "memory": "Chứng minh bạn giao tiếp rõ, phản hồi nhanh và làm việc tốt trong team.", "color": "#b45309", "weight": 0.2, "criteria": [{"id": "effective-communication", "name": "Effective communication", "vn": "Giao tiếp hiệu quả", "plain": "Trình bày rõ task, tiến độ, blocker; hiểu chắc thông tin đã confirm và phản hồi nhanh khi team cần.", "evidence": ["Ví dụ message/status update ngắn gọn, rõ blocker", "Meeting note hoặc comment xác nhận requirement", "Thời gian phản hồi và follow-up khi có câu hỏi"], "description": "- Communicates effectively, proactively, clearly, concisely and in an audience-oriented way, in written and verbal form.\n\n- Actively listens to others and ensures they are understood.\n\n- Pays attention to nonverbal communication.", "metricsText": "+ Có sự trình bày rõ ràng về task của mình đang làm, tiến độ, block.\n+ Đảm bào Những thông tin của team đã confim Luôn được hiểu và Nắm chắc.\n+ Phản hồi nhanh chóng khi Có Những câu hỏi từ các thành trong team", "metrics": ["Có sự trình bày rõ ràng về task của mình đang làm, tiến độ, block.", "Đảm bào Những thông tin của team đã confim Luôn được hiểu và Nắm chắc.", "Phản hồi nhanh chóng khi Có Những câu hỏi từ các thành trong team"], "section": "Communication and Collaboration", "sectionVn": "Giao tiếp & hợp tác", "partWeight": 0.2, "innerWeight": 0.25, "overallWeight": 0.05, "row": 26, "selfScore": "", "evaluatorScore": ""}, {"id": "conflict-resolution-team-leadership", "name": "Conflict Resolution & Team Leadership", "vn": "Xử lý khác biệt & tinh thần dẫn dắt", "plain": "Cởi mở lắng nghe, tiếp thu và đóng góp mang tính xây dựng để cải thiện bản thân và team.", "evidence": ["Một feedback bạn đã tiếp thu và thay đổi", "Một ý kiến đóng góp giúp team rõ hơn", "Ví dụ thay đổi quan điểm sau khi nghe input tốt hơn"], "description": "- Openly shares their opinions and contributes to discussions in a respectful manner.\n\n- Works with teammates to resolve disagreement in a healthy manner.\n\n- Is open to changing their perspective and plans based on others' input.", "metricsText": "- Luôn cởi mở Lắng nghe, tiếp thu, cải thiện.\n- Đóng góp mang tính xây dựng phát triển bản thân.", "metrics": ["Luôn cởi mở Lắng nghe, tiếp thu, cải thiện.", "Đóng góp mang tính xây dựng phát triển bản thân."], "section": "Communication and Collaboration", "sectionVn": "Giao tiếp & hợp tác", "partWeight": 0.2, "innerWeight": 0.25, "overallWeight": 0.05, "row": 27, "selfScore": "", "evaluatorScore": ""}, {"id": "teamwork", "name": "Teamwork", "vn": "Làm việc nhóm", "plain": "Theo scrum, tham gia planning/meeting, học hỏi cùng team, phản hồi nhanh và có ownership với kết quả chung.", "evidence": ["Module bạn phụ trách và phần phối hợp với người khác", "Contribution trong planning/meeting", "Ví dụ support member khác hoặc unblock team"], "description": "- Follow team's working process to ensure delivery plan\n\n- Having good onwnership on their own delivery's result and the team's delivery result\n\nTeam-based mindset\n  - Active Listening: Pay close attention to what others are saying during meetings or code reviews. Active listening is crucial for understanding project requirements and collaborating effectively.\n  - Clear and Concise Communication: Can explain their ideas and code clearly, both verbally and in writing (e.g., code comments, documentation). Clear communication avoids confusion and ensures everyone is on the same page.\n  - Asking Clarifying Questions: Ask relevant questions to understand tasks, requirements, or feedback from others. Asking questions demonstrates a willingness to learn and collaborate.\n  - Problem-Solving in a Team Context: Ability to solve problems collaboratively within the team. Actively participate in discussions to find solutions, offer creative ideas, and contribute to resolving challenges collectively. A team-oriented mindset involves being proactive in problem-solving and seeking input from others when needed.\n  - Adaptability and Flexibility: Adapts to changes in project requirements or team dynamics. Flexible in adjusting their approach to meet new challenges, and support team members during periods of change or uncertainty. Adaptability is essential for working effectively in a dynamic team environment.\n  - Respect for Others' Perspectives: Pay attention to how to interacts with team members who have different backgrounds, experiences, or opinions. Show respect for others' perspectives, actively listen to diverse viewpoints, and contribute to a positive team culture. Demonstrating respect and inclusivity fosters a supportive team environment.\n  - Initiative and Proactiveness: Takes initiative to contribute beyond their assigned tasks and proactively address issues or opportunities within the team. Eager to learn new skills, share knowledge with others, and take on additional responsibilities when needed. Initiative and proactiveness are indicators of a strong team-oriented mindset.", "metricsText": "- Tuân theo mô hình scrum để đẩy tasks đúng dealine.\n- Tham gia tích cực các cuộc meeting, planing.\n- Học hỏi và phát triển cùng nhau.\n- Phản hồi nhanh chóng.\n- Cơ sở đánh giá: dựa trên sự hiệu quả khi làm việc cùng team. Có thể record lại các module làm trong dự án, và những đóng góp của mình khi làm những module đó.", "metrics": ["Tuân theo mô hình scrum để đẩy tasks đúng dealine.", "Tham gia tích cực các cuộc meeting, planing.", "Học hỏi và phát triển cùng nhau.", "Phản hồi nhanh chóng.", "Cơ sở đánh giá: dựa trên sự hiệu quả khi làm việc cùng team. Có thể record lại các module làm trong dự án, và những đóng góp của mình khi làm những module đó."], "section": "Communication and Collaboration", "sectionVn": "Giao tiếp & hợp tác", "partWeight": 0.2, "innerWeight": 0.5, "overallWeight": 0.1, "row": 28, "selfScore": "", "evaluatorScore": ""}]}, {"name": "Individual Growth and Leadership", "vn": "Phát triển cá nhân", "memory": "Chứng minh bạn nhận feedback, cải thiện liên tục và chia sẻ lại kiến thức.", "color": "#7c3aed", "weight": 0.1, "criteria": [{"id": "feedbacks-and-improvements", "name": "Feedbacks and Improvements", "vn": "Feedback & cải thiện", "plain": "Chủ động xin feedback, biến feedback thành hành động cải thiện và ưu tiên việc tạo giá trị.", "evidence": ["Danh sách feedback đã nhận -> hành động -> kết quả", "Ví dụ cải thiện process/code sau review", "Ghi chú cách bạn ưu tiên việc quan trọng trước"], "description": "- Actively seeks out feedback from their teammates when doing: code review, solutions and requirement analysis..\n\n - Actively seeks out feedback from their Project Manager/Scrum Master/Team Lead on working process and productivity\n\n - Works to use feedback that they receive as a tool for growth\n\n - Willing to deliver constructive feedback to other teammates", "metricsText": "- Lắng nghe những feedback của anh chị trong team để cải thiện kinh nghiệm của mình.\n- Thực hiện những hành động cải thiện theo sự chỉ dẫn của anh chị.\n- Liên tục học hỏi và cải tiến.\n- Tập trung vào những thứ tạo ra giá trị bản thân loại bỏ những thứ không cần thiết không tạo ra giá trị.\n- Tích cực quan sát, nhận định để đưa ra các quyết định nhanh hiệu quả dưới sự mơ hồ.\n- Rèn luyên tư duy có hệ thống , việc gì quan trọng thì mình làm trước việc gì ít quan trọng hơn thì mình neo đó để làm ngay sau.", "metrics": ["Lắng nghe những feedback của anh chị trong team để cải thiện kinh nghiệm của mình.", "Thực hiện những hành động cải thiện theo sự chỉ dẫn của anh chị.", "Liên tục học hỏi và cải tiến.", "Tập trung vào những thứ tạo ra giá trị bản thân loại bỏ những thứ không cần thiết không tạo ra giá trị.", "Tích cực quan sát, nhận định để đưa ra các quyết định nhanh hiệu quả dưới sự mơ hồ.", "Rèn luyên tư duy có hệ thống , việc gì quan trọng thì mình làm trước việc gì ít quan trọng hơn thì mình neo đó để làm ngay sau."], "section": "Individual Growth and Leadership", "sectionVn": "Phát triển cá nhân", "partWeight": 0.1, "innerWeight": 0.5, "overallWeight": 0.05, "row": 32, "selfScore": "", "evaluatorScore": ""}, {"id": "knowledge-sharing", "name": "Knowledge Sharing", "vn": "Chia sẻ kiến thức", "plain": "Giữ tinh thần học hỏi, tham gia sharing và chia sẻ lại feature/kiến thức cho member khác.", "evidence": ["Buổi sharing hoặc note đã viết", "Demo feature/module cho team", "Một lần giải thích lại vấn đề giúp member khác nắm được"], "description": "- Good understanding in their area of work and shares their knowledge with their teammates\n - By regularly discuss and share opinion on requirement analysis\n - By actively learning and asking for feedbacks when apply technical knowledge from their domain with their teammates/lead\n - By willing to join with their teammates on internal team's technical sharing\n - By actively providing their constructive feedbacks on team's technical sharing result", "metricsText": "- Luôn giữ tinh thần học hỏi, chia sẻ và hợp tác cao.\n - Tham gia các buổi sharing, chia sẻ kiến thức.\n - Tích cực tham chia sẻ những tính năng đã làm cho members trong team nắm.", "metrics": ["Luôn giữ tinh thần học hỏi, chia sẻ và hợp tác cao.", "Tham gia các buổi sharing, chia sẻ kiến thức.", "Tích cực tham chia sẻ những tính năng đã làm cho members trong team nắm."], "section": "Individual Growth and Leadership", "sectionVn": "Phát triển cá nhân", "partWeight": 0.1, "innerWeight": 0.5, "overallWeight": 0.05, "row": 33, "selfScore": "", "evaluatorScore": ""}]}], "criteria": [{"id": "programming-capability", "name": "Programming Capability", "vn": "Năng lực lập trình", "plain": "Nắm Kotlin cơ bản đến ứng dụng thực tế, hiểu Android core, UI, navigation, API, storage, lifecycle và thư viện phổ biến.", "evidence": ["2-3 PR/module có dùng Kotlin + Android core", "Ví dụ call REST/GraphQL, Coroutine, Room/SharedPreferences", "Demo hoặc ghi chú về UI XML/Compose, navigation, lifecycle"], "description": "- Have knowledge of fundamental programming concepts ( SOLID, DRY, KISS )\n- Knowledge of Mobile Development: Understanding mobile development concepts like navigation, state management, and life cycle.Understanding of\n- RESTful APIs / GraphQL\n- Can build any layout/ custom component ( medium ).\n- Can implement and use third party library with Intermediate knowledge.\n- Knowledge common feature for mobile development: Notification, DeepLink, Core Location, etc.\n- Good understanding of How GIT works\nReact-native:\n- Proficiency in JavaScript. Additionally, familiarity with typescript may be beneficial as well.\n- Familiarity with React: React Native uses React to build user interfaces, so you should have a good grasp of React concepts like components, state, and props. Can build layout/ custom component ( basic-medium ).\niOS:\n- Proficiency in Swift, the primary programming language for iOS development, is essential. Additionally, familiarity with Objective-C may be beneficial as well. You should be comfortable with object-oriented programming concepts, data structures, and algorithms.\n- Knowledge of Mobile Development: Understanding mobile development concepts like navigation, and life circle, etc...\n- iOS Development Tools: Understanding of Xcode, Apple's integrated development environment (IDE) for iOS development, is crucial. You should be comfortable with using Xcode for coding, debugging, and testing iOS applications.\n- Understanding of iOS Frameworks: Basic Knowledge of iOS frameworks like UIKit, Foundation, and concepts: View, View Controller, Storyboard, Delegate Pattern, AutoLayout, Networking, Asynchronous Programming.\nAndroid:\n- Proficiency in Kotlin, the primary programing language for Android development, is essential. Additionally, familiarity with java may be beneficial as well. You should be comfortable with object-oriented programming concepts, data structures, and algorithms.\n- Knowledge of Mobile Development: Understanding mobile development concepts like navigation, state management, and life cycle.\n- Android Development Tools: Understanding of Android Studio, Google's integrated development environment (IDE) for Android development, is crucial. You should be comfortable with using Android Studio for coding, debugging, and testing iOS applications.\n- Understanding of Android Frameworks: Basic Knowledge of Android SDK and concepts like Activity, Layouts, Views, Intents, Fragments, Activity Life circle, Networking, etc.", "metricsText": "Koitlin language:\n+ Biến và kiểu dữ liệu: var, val, Int, String, Boolean, List, Map.\n+ Cấu trúc điều kiện: if-else, when, for loop, while loop.\n+ Hàm: Cách khai báo hàm, tham số, giá trị trả về, hàm.\n+ Lớp và đối tượng: class, object, constructor, inheritance (kế thừa), interface.\n+ Null Safety: cách xử lý null trong Kotlin, safe calls (?.), not-null assertions (!!).\n+ Extension Functions: Cách mở rộng chức năng của lớp.\n+ Array, List\n+ Exception Handling(try catch)\n+ Standard Library Usage: Explore Kotlin's standard library functions that make coding easier, such as let, apply, run, also, takeIf, and takeUnless\n\nAndroid:\n+ Hiểu biết sâu về các thành phần cơ bản của Android như  Activity, Layouts, Views, Intents, Fragments, Activity Life circle, Networking, etc..\n+ Hiểu được luồng làm việc của acitvity, fragment, model và flow theo chuẩn của android .\n+ Hiểu và apply navigation.\n+ Hiểu và apply binding.\n+ Hiểu cách Custom View, Sub List funtion.\n+ Hiểu Gradle android\n+ Google service, firebase service.\n+ Hiểu về Coroutine + RX.\n+ Hiểu và có thể implement third library ( cách implement third party module)\n+ Hiểu về storage: internal storage, external storage, database is plus point\n+ Nắm cơ bản về canvas (Nó ứng dụng mạnh mẽ cho tất cả các view khó, Nếu thành thạo có thể xử lí hầu hết tất cả các view yêu cầu)\n+ Nắm cơ bản được cách dùng  services của Android(bluetooth, wifi, permisions, phone call, sms, micro..)\n+ Hiểu và  implement call rest api với Retrofit\n+ Hiểu và implement  call graphql với Apollo Graphql.\n+ Tạo  UI  theo yêu cầu bằng XML hoặc Compose.\n+ Hiểu và có thể implement lib: Notification, deeplink, core location, file access.\n+ Backstack của activity, fragment (add, replace fragment).\n+ Code xml (sử dụng linearlayout, relative layout, constrainlayout) và custom view.\n+ Hiểu life circle của app Android  life circle component, app state, app life circle.\n+ Handle bất đồng bộ bằng Coroutine library\n+ Nắm vững và có thể sử dụng hiểu quả các local storage như là Room, SharedPreferences.\n+ Rèn luyện tư duy của mình cho có  hệ thống(system thinking)", "metrics": ["Koitlin language:", "Biến và kiểu dữ liệu: var, val, Int, String, Boolean, List, Map.", "Cấu trúc điều kiện: if-else, when, for loop, while loop.", "Hàm: Cách khai báo hàm, tham số, giá trị trả về, hàm.", "Lớp và đối tượng: class, object, constructor, inheritance (kế thừa), interface.", "Null Safety: cách xử lý null trong Kotlin, safe calls (?.), not-null assertions (!!).", "Extension Functions: Cách mở rộng chức năng của lớp.", "Array, List", "Exception Handling(try catch)", "Standard Library Usage: Explore Kotlin's standard library functions that make coding easier, such as let, apply, run, also, takeIf, and takeUnless", "Android:", "Hiểu biết sâu về các thành phần cơ bản của Android như  Activity, Layouts, Views, Intents, Fragments, Activity Life circle, Networking, etc..", "Hiểu được luồng làm việc của acitvity, fragment, model và flow theo chuẩn của android .", "Hiểu và apply navigation.", "Hiểu và apply binding.", "Hiểu cách Custom View, Sub List funtion.", "Hiểu Gradle android", "Google service, firebase service.", "Hiểu về Coroutine + RX.", "Hiểu và có thể implement third library ( cách implement third party module)", "Hiểu về storage: internal storage, external storage, database is plus point", "Nắm cơ bản về canvas (Nó ứng dụng mạnh mẽ cho tất cả các view khó, Nếu thành thạo có thể xử lí hầu hết tất cả các view yêu cầu)", "Nắm cơ bản được cách dùng  services của Android(bluetooth, wifi, permisions, phone call, sms, micro..)", "Hiểu và  implement call rest api với Retrofit", "Hiểu và implement  call graphql với Apollo Graphql.", "Tạo  UI  theo yêu cầu bằng XML hoặc Compose.", "Hiểu và có thể implement lib: Notification, deeplink, core location, file access.", "Backstack của activity, fragment (add, replace fragment).", "Code xml (sử dụng linearlayout, relative layout, constrainlayout) và custom view.", "Hiểu life circle của app Android  life circle component, app state, app life circle.", "Handle bất đồng bộ bằng Coroutine library", "Nắm vững và có thể sử dụng hiểu quả các local storage như là Room, SharedPreferences.", "Rèn luyện tư duy của mình cho có  hệ thống(system thinking)"], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.25, "overallWeight": 0.125, "row": 10, "selfScore": "", "evaluatorScore": ""}, {"id": "quality-of-code", "name": "Quality of Code", "vn": "Chất lượng code", "plain": "Code đúng mục đích, dễ đọc, dễ maintain, MR rõ thông tin và không lặp lại lỗi đã được góp ý.", "evidence": ["MR có mô tả task, ảnh/video test, checklist", "Ví dụ function đặt tên rõ, ít duplicate, dễ mở rộng", "Danh sách lỗi review đã ghi chú và đã tránh lặp lại"], "description": "\"- Ensure their code following guidance, conding conventions ( functionality, readability and maintainability, efficiency and optimization, reusability and edge cases, with errors in mind )\n    ex:\n      + Functionality:\n            - Does the code achieve its intended purpose?  Test the functionality thoroughly to identify bugs or areas where the code might not behave as expected under certain conditions.\n            - Edge Cases:  Are there edge cases or unexpected inputs that could cause the code to break?  Junior developers might miss these, so consider including some in your evaluation.\n            - Does the UI match the mockups or design specs? Ensure the visual elements (layout, colors, fonts) align with the intended design.\n            - Interactive elements: Do buttons, forms, and other interactive elements function correctly and provide the expected user experience? Test these elements thoroughly across different browsers and devices.\n            - Responsiveness: Does the website adapt appropriately to different screen sizes (desktop, tablet, mobile)? Responsive design is crucial for modern web development.\n      + Readability and Maintainability:\n            - Clarity and Structure:  Is the code well-formatted, indented, and easy to read? Does it follow consistent naming conventions?  Clean code is easier to understand, maintain, and modify in the future, even by someone unfamiliar with the codebase.\n            - Meaningful Variable and Function Names: Are variable and function names descriptive and reflect their purpose? This improves readability and makes the code more self-documenting.\n            - Comments: Are comments used effectively to explain complex logic or non-obvious parts of the code?  Comments should clarify the code's intent, not simply repeat what the code does.\n      + Efficiency and Optimization:\n            - Are there opportunities to improve the code's performance?  While optimization might not be the top priority for junior developers, consider if there are glaring inefficiencies that could be addressed.\n            - Resource Usage: Does the code use memory and processing power efficiently?  This might not be a major concern for simple applications, but it's good practice to be mindful of resource usage.\n      + Reference source for checking conventions\n           - 80% follow project team/ functional team coding conventions\n           - Practical usage of tools/techniques for improving code quality ( eslint, sonarlint, .. )\n           - Having good understanding of technical's domain good practices/ techniques on improving code quality\n\n- Proactively ask for help/peer review from other more senior developers within project team or functional team\n\n- 70% code should be reviewed by other senior member to ensure quality\n\nFocus point\n\n- Focus on growth: The goal is to identify areas where the junior developer can improve their skills. Provide constructive feedback and suggest resources (online tutorials, documentation) to help them learn.\n- Potential over perfection: Don't expect perfectly optimized code. Look for a foundational understanding of best practices and a willingness to learn.\n- Communication is key: Discuss the code with other developers as much as possible. This can reveal their thought process, problem-solving approach, and areas where they might need clarification.", "metricsText": "+ Follow 100% coding convertion.\n+ Code function đúng mục đích , dễ đọc dễ hiểu, có thể mở rộng, maintain.\n+ Viết function rõ ràng, có description đầy đủ.\n+ Tạo MR có đầy đủ thông tin của task liên quan.\n+ Code không được lặp đi lặp lại một vấn đề mà đã được góp ý trước đó. Phải ghi chép để tránh gặp vấn đề tương tự.", "metrics": ["Follow 100% coding convertion.", "Code function đúng mục đích , dễ đọc dễ hiểu, có thể mở rộng, maintain.", "Viết function rõ ràng, có description đầy đủ.", "Tạo MR có đầy đủ thông tin của task liên quan.", "Code không được lặp đi lặp lại một vấn đề mà đã được góp ý trước đó. Phải ghi chép để tránh gặp vấn đề tương tự."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.25, "overallWeight": 0.125, "row": 11, "selfScore": "", "evaluatorScore": ""}, {"id": "testing", "name": "Testing", "vn": "Kiểm thử", "plain": "Tự test đủ yêu cầu trên emulator hoặc device, biết so sánh behavior giữa platform và có hướng automation khi cần.", "evidence": ["Test note theo từng acceptance criteria", "Screenshot/video test trên emulator hoặc real device", "Case so sánh Android/iOS/Web nếu cùng flow"], "description": "Knows the testing pyramid and how to writes unit tests, sometimes with help from more senior engineers.\n\n Do their self-test carefully before request to merge to make sure\n - All requirements fulfilled\n - Coding convention followed", "metricsText": "- Những yêu cầu của tasks đều được testing trên emulator hoặc real devices.\n- Đảm bảo các tasks đều đủ yêu cầu.\n- Thực hiện thao tác automation test với appium, test UI chạy trực tiếp trên máy ảo để test theo id.\n - Compare behavior giữa các nền tảng iOS, Android và Web khi làm cùng một luồng logic, bussines để cho đồng bộ.", "metrics": ["Những yêu cầu của tasks đều được testing trên emulator hoặc real devices.", "Đảm bảo các tasks đều đủ yêu cầu.", "Thực hiện thao tác automation test với appium, test UI chạy trực tiếp trên máy ảo để test theo id.", "Compare behavior giữa các nền tảng iOS, Android và Web khi làm cùng một luồng logic, bussines để cho đồng bộ."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 12, "selfScore": "", "evaluatorScore": ""}, {"id": "debuging", "name": "Debuging", "vn": "Debug", "plain": "Xác định lỗi ở đâu, dùng tool debug, biết lỗi thường gặp và khoanh vùng file/module liên quan.", "evidence": ["Một bug đã debug: triệu chứng, giả thuyết, nguyên nhân, fix", "Logcat/breakpoint/network inspector minh họa", "Ghi chú pattern lỗi thường gặp trong dự án"], "description": "Understands the basics of debugging and the tools used for it, sometimes with help from more seinor engineers in following criteria\n\n- Identifying Errors: Pinpoint the root cause of errors effectively,  involves understanding error messages, using developer tools, and replicating the issue consistently.\n- Debugging Techniques:  Utilize a systematic approach to debugging (e.g., using console logs, breakpoints, debugging tools: Flipper, Xcode, AndroidStudio, etc ). Try to demonstrate thought process and can break down the problem logically.\n- Basic Knowledge of Common Issues:  Familiar with common mobile development errors (e.g., code errors, style issues). While they might not have encountered every issue, a basic understanding demonstrates their learning and troubleshooting skills.\n- Logical Thinking: Can explain thought process and the steps taken to debug the issue. Look for a logical approach that involves isolating the problem, testing hypotheses, and refining solutions.\n- Resourcefulness: Know how to find resources to help them debug (e.g., online documentation, Stack Overflow) and having ability to effectively search for solutions is a valuable debugging skill.\n- Adaptability: Can adjust their approach if initial solutions don't work. Debugging is iterative, so see if they can learn from their mistakes and try different strategies.\n- Asking Clarifying Questions: Do ask relevant questions to understand the symptoms and context of the bug?  Effective communication is key to diagnosing issues accurately.\n- Collaboration: Can explain the bug and their debugging process to others (even if they haven't solved it yet). This demonstrates their understanding of the problem and their ability to collaborate on solutions.\n- Willingness to Learn:  Are they open to suggestions and feedback during the debugging process?  Look for a growth mindset and a desire to learn from more experienced developers.", "metricsText": "- Xác định được lỗi xảy ra ở đâu.\n- Sử dụng các tool hỗ trợ debug.\n- Biết được Những lỗi thường gặp.\n- Phán đoán được bug xảy ra ở đâu, file nào.", "metrics": ["Xác định được lỗi xảy ra ở đâu.", "Sử dụng các tool hỗ trợ debug.", "Biết được Những lỗi thường gặp.", "Phán đoán được bug xảy ra ở đâu, file nào."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 13, "selfScore": "", "evaluatorScore": ""}, {"id": "code-understanding-review-and-documentation", "name": "Code Understanding, Review and Documentation", "vn": "Hiểu code, review, tài liệu", "plain": "Hiểu cấu trúc project, đọc được code của người khác và chủ động viết tài liệu ngắn cho feature/module.", "evidence": ["Sơ đồ module/folder của app", "README hoặc note hướng dẫn setup/feature", "Ví dụ bạn review hoặc giải thích một flow business quan trọng"], "description": "Is able to read and understand the codes and its basic context within team's domain with help from more senior engineers.\n\nProactively take part in contributing to project team's technical documentation with review from higher level member or cross-service member within their team ( eg: QA member, Leader, .. )\n- Business documentation\n- Feature tutorials", "metricsText": "- Nắm được cấu trúc thư mục, các module được sử dụng trong ứng dụng.\n - Có thể hiểu code của các thành viên khác trong dự án.\n - Có thử chủ động viết document(readme, mô tả các dùng tính năng)\n - Tự setup cấu trúc thư mục cho dự án demo\n - Nắm được các luồng bussines, luồng xử lý quan trọng của ứng dụng, web.", "metrics": ["Nắm được cấu trúc thư mục, các module được sử dụng trong ứng dụng.", "Có thể hiểu code của các thành viên khác trong dự án.", "Có thử chủ động viết document(readme, mô tả các dùng tính năng)", "Tự setup cấu trúc thư mục cho dự án demo", "Nắm được các luồng bussines, luồng xử lý quan trọng của ứng dụng, web."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 14, "selfScore": "", "evaluatorScore": ""}, {"id": "software-architecture", "name": "Software Architecture", "vn": "Kiến trúc phần mềm", "plain": "Viết function ngắn gọn, tái sử dụng, không duplicate và tuân thủ pattern sẵn có của source.", "evidence": ["PR refactor nhỏ giúp giảm duplicate", "Ví dụ áp dụng pattern có sẵn trong project", "Giải thích vì sao function/module dễ maintain hơn"], "description": "- Is aware of overall service architecture.\n\n- Designs basic functions with an awareness of overall service architecture, avoiding duplication across codebases and interface-breaking changes.", "metricsText": "- Viết function rõ ràng, ngắn gọn, dễ maintain và tái sử dụng\n- Không lặp code\n- Tuân thủ design parttern của source code.", "metrics": ["Viết function rõ ràng, ngắn gọn, dễ maintain và tái sử dụng", "Không lặp code", "Tuân thủ design parttern của source code."], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 15, "selfScore": "", "evaluatorScore": ""}, {"id": "security", "name": "Security", "vn": "Bảo mật", "plain": "Không leak source/key/data nhạy cảm, chọn thư viện an toàn, cập nhật dependency và lưu trữ local đúng cách.", "evidence": ["Checklist không hardcode secret/API key", "Ví dụ xử lý dữ liệu nhạy cảm không dùng storage không mã hóa", "Ghi chú review bảo mật trong MR"], "description": "Understands the importance of security:\n- Avoid sharing source code on public platforms like GitHub to prevent unauthorized access by individuals or entities outside the project team.\n- Safeguard application keys or sensitive information such as API keys, database credentials, or encryption keys to prevent potential exploitation or misuse by unauthorized users.", "metricsText": "- Đối với Công ty: Luôn tuân thủ quy tắc Security công ty\n - Đối với dự án:\n + Tuân thủ nguyên tắc bảo mật dự án không để leak thông tin dự án của khách hàng\n + Đề xuất các thư viện và công cụ an toàn: Sử dụng các thư viện phổ biến và được bảo trì tốt cho các dự án của bạn.\n + Thường xuyên cập nhật các module: Thường xuyên cập nhật lên các phiên bản mới nhất để khắc phục mọi sự cố bảo mật đã biết.\n + Bảo vệ mã nguồn: tránh chia sẻ ra public repo hoặc thành viên không thuộc dự án.\n + Bảo vệ thông tin nhạy cảm: Không được hardcode các data nhạy cảm trong source code\n + Lưu trữ an toàn:  Các thông tin nhạy cảm nếu lưu xuống local phải được mã hóa, không được sử dụng AsyncStorage cho dữ liệu nhạy cảm vì nó không được mã hóa.\n + Review code cẩn thận: Luôn kiểm tra các vấn đề bảo mật thường gặp trong quá trình review code, nếu phát hiện các issue liên quan đến bảo mật và report cho team thì sẽ là điểm cộng", "metrics": ["Đối với Công ty: Luôn tuân thủ quy tắc Security công ty", "Đối với dự án:", "Tuân thủ nguyên tắc bảo mật dự án không để leak thông tin dự án của khách hàng", "Đề xuất các thư viện và công cụ an toàn: Sử dụng các thư viện phổ biến và được bảo trì tốt cho các dự án của bạn.", "Thường xuyên cập nhật các module: Thường xuyên cập nhật lên các phiên bản mới nhất để khắc phục mọi sự cố bảo mật đã biết.", "Bảo vệ mã nguồn: tránh chia sẻ ra public repo hoặc thành viên không thuộc dự án.", "Bảo vệ thông tin nhạy cảm: Không được hardcode các data nhạy cảm trong source code", "Lưu trữ an toàn:  Các thông tin nhạy cảm nếu lưu xuống local phải được mã hóa, không được sử dụng AsyncStorage cho dữ liệu nhạy cảm vì nó không được mã hóa.", "Review code cẩn thận: Luôn kiểm tra các vấn đề bảo mật thường gặp trong quá trình review code, nếu phát hiện các issue liên quan đến bảo mật và report cho team thì sẽ là điểm cộng"], "section": "Technical", "sectionVn": "Kỹ thuật", "partWeight": 0.5, "innerWeight": 0.1, "overallWeight": 0.05, "row": 16, "selfScore": "", "evaluatorScore": ""}, {"id": "business-context-understanding", "name": "Business Context Understanding", "vn": "Hiểu business context", "plain": "Hiểu task đang làm và nắm phần lớn yêu cầu khách hàng trước khi chọn cách code.", "evidence": ["Tóm tắt requirement bằng lời của bạn", "Mapping requirement -> technical approach", "Câu hỏi đã hỏi để làm rõ nghiệp vụ"], "description": "Have basic understanding of business problems and situations\n- Overall business of the application\n- Know what issue that the application is trying to resolve\n\nAnalyze their module/feature/task business requirement with > 80% thorough understanding and need help from more senior member on what and how to achieve the requirement", "metricsText": "- Hiểu rõ được những tasks mình đang làm.\n- Hiểu trên (80%) yêu cầu của khách hàng để đem ra cách giải quyết code.", "metrics": ["Hiểu rõ được những tasks mình đang làm.", "Hiểu trên (80%) yêu cầu của khách hàng để đem ra cách giải quyết code."], "section": "Delivery", "sectionVn": "Giao hàng", "partWeight": 0.2, "innerWeight": 0.25, "overallWeight": 0.05, "row": 20, "selfScore": "", "evaluatorScore": ""}, {"id": "task-breakdown-prioritisation-dependencies", "name": "Task Breakdown, Prioritisation, dependencies", "vn": "Chia nhỏ, ưu tiên, dependency", "plain": "Biết chia task, chọn việc ưu tiên trước, cập nhật Jira và báo sớm issue ảnh hưởng timeline.", "evidence": ["Task breakdown/Jira update rõ trạng thái", "Ví dụ trade-off ưu tiên đã báo PM/Client/EM", "Danh sách dependency/blocker và cách xử lý"], "description": "- Know value of right sizing tasks to enable continuous integration and incremental delivery.\n\n- Know the task prioritisation and act accordingly.\n\n- Understands dependencies and note them together with other task prioritization", "metricsText": "+ Xác định được các nhiệm vụ nào ưu tiên hơn để triển khai trước, bên cạnh đó cũng sắp xếp thời gian phù hợp để triển khai các nhiệm có độ ưu tiên thấp hợp.\n+ Chủ động cập nhập trạng thái của task ( Jira ).\n+ Chủ động báo cáo với Client, PM, EM các issue Liên quan đến độ ưu tiên của task để Đảm bảo hoàn thành đúng thời gian.", "metrics": ["Xác định được các nhiệm vụ nào ưu tiên hơn để triển khai trước, bên cạnh đó cũng sắp xếp thời gian phù hợp để triển khai các nhiệm có độ ưu tiên thấp hợp.", "Chủ động cập nhập trạng thái của task ( Jira ).", "Chủ động báo cáo với Client, PM, EM các issue Liên quan đến độ ưu tiên của task để Đảm bảo hoàn thành đúng thời gian."], "section": "Delivery", "sectionVn": "Giao hàng", "partWeight": 0.2, "innerWeight": 0.5, "overallWeight": 0.1, "row": 21, "selfScore": "", "evaluatorScore": ""}, {"id": "reliability-delivery-accountability", "name": "Reliability, delivery accountability", "vn": "Độ tin cậy khi delivery", "plain": "Tham gia daily, cập nhật tiến độ thường xuyên, hoàn thành đúng cam kết hoặc báo sớm khi có rủi ro.", "evidence": ["Log cập nhật tiến độ hoặc daily note", "Task hoàn thành đúng deadline", "Một tình huống báo rủi ro sớm và hướng xử lý"], "description": "- Has daily conversation with the team about the progress of their work.\n\n- Delivers on commitments with a sense of urgency.", "metricsText": "+ Luôn tuân thủ/ tham gia các buổi daily meeting của project.\n+ Chủ động / thường xuyên cập nhập tiện độ project với team và PM.\n+ Hoàn thành công việc như đã cam kết, nếu có vấn đề phát sinh phải kịp thời báo cáo với PM.", "metrics": ["Luôn tuân thủ/ tham gia các buổi daily meeting của project.", "Chủ động / thường xuyên cập nhập tiện độ project với team và PM.", "Hoàn thành công việc như đã cam kết, nếu có vấn đề phát sinh phải kịp thời báo cáo với PM."], "section": "Delivery", "sectionVn": "Giao hàng", "partWeight": 0.2, "innerWeight": 0.25, "overallWeight": 0.05, "row": 22, "selfScore": "", "evaluatorScore": ""}, {"id": "effective-communication", "name": "Effective communication", "vn": "Giao tiếp hiệu quả", "plain": "Trình bày rõ task, tiến độ, blocker; hiểu chắc thông tin đã confirm và phản hồi nhanh khi team cần.", "evidence": ["Ví dụ message/status update ngắn gọn, rõ blocker", "Meeting note hoặc comment xác nhận requirement", "Thời gian phản hồi và follow-up khi có câu hỏi"], "description": "- Communicates effectively, proactively, clearly, concisely and in an audience-oriented way, in written and verbal form.\n\n- Actively listens to others and ensures they are understood.\n\n- Pays attention to nonverbal communication.", "metricsText": "+ Có sự trình bày rõ ràng về task của mình đang làm, tiến độ, block.\n+ Đảm bào Những thông tin của team đã confim Luôn được hiểu và Nắm chắc.\n+ Phản hồi nhanh chóng khi Có Những câu hỏi từ các thành trong team", "metrics": ["Có sự trình bày rõ ràng về task của mình đang làm, tiến độ, block.", "Đảm bào Những thông tin của team đã confim Luôn được hiểu và Nắm chắc.", "Phản hồi nhanh chóng khi Có Những câu hỏi từ các thành trong team"], "section": "Communication and Collaboration", "sectionVn": "Giao tiếp & hợp tác", "partWeight": 0.2, "innerWeight": 0.25, "overallWeight": 0.05, "row": 26, "selfScore": "", "evaluatorScore": ""}, {"id": "conflict-resolution-team-leadership", "name": "Conflict Resolution & Team Leadership", "vn": "Xử lý khác biệt & tinh thần dẫn dắt", "plain": "Cởi mở lắng nghe, tiếp thu và đóng góp mang tính xây dựng để cải thiện bản thân và team.", "evidence": ["Một feedback bạn đã tiếp thu và thay đổi", "Một ý kiến đóng góp giúp team rõ hơn", "Ví dụ thay đổi quan điểm sau khi nghe input tốt hơn"], "description": "- Openly shares their opinions and contributes to discussions in a respectful manner.\n\n- Works with teammates to resolve disagreement in a healthy manner.\n\n- Is open to changing their perspective and plans based on others' input.", "metricsText": "- Luôn cởi mở Lắng nghe, tiếp thu, cải thiện.\n- Đóng góp mang tính xây dựng phát triển bản thân.", "metrics": ["Luôn cởi mở Lắng nghe, tiếp thu, cải thiện.", "Đóng góp mang tính xây dựng phát triển bản thân."], "section": "Communication and Collaboration", "sectionVn": "Giao tiếp & hợp tác", "partWeight": 0.2, "innerWeight": 0.25, "overallWeight": 0.05, "row": 27, "selfScore": "", "evaluatorScore": ""}, {"id": "teamwork", "name": "Teamwork", "vn": "Làm việc nhóm", "plain": "Theo scrum, tham gia planning/meeting, học hỏi cùng team, phản hồi nhanh và có ownership với kết quả chung.", "evidence": ["Module bạn phụ trách và phần phối hợp với người khác", "Contribution trong planning/meeting", "Ví dụ support member khác hoặc unblock team"], "description": "- Follow team's working process to ensure delivery plan\n\n- Having good onwnership on their own delivery's result and the team's delivery result\n\nTeam-based mindset\n  - Active Listening: Pay close attention to what others are saying during meetings or code reviews. Active listening is crucial for understanding project requirements and collaborating effectively.\n  - Clear and Concise Communication: Can explain their ideas and code clearly, both verbally and in writing (e.g., code comments, documentation). Clear communication avoids confusion and ensures everyone is on the same page.\n  - Asking Clarifying Questions: Ask relevant questions to understand tasks, requirements, or feedback from others. Asking questions demonstrates a willingness to learn and collaborate.\n  - Problem-Solving in a Team Context: Ability to solve problems collaboratively within the team. Actively participate in discussions to find solutions, offer creative ideas, and contribute to resolving challenges collectively. A team-oriented mindset involves being proactive in problem-solving and seeking input from others when needed.\n  - Adaptability and Flexibility: Adapts to changes in project requirements or team dynamics. Flexible in adjusting their approach to meet new challenges, and support team members during periods of change or uncertainty. Adaptability is essential for working effectively in a dynamic team environment.\n  - Respect for Others' Perspectives: Pay attention to how to interacts with team members who have different backgrounds, experiences, or opinions. Show respect for others' perspectives, actively listen to diverse viewpoints, and contribute to a positive team culture. Demonstrating respect and inclusivity fosters a supportive team environment.\n  - Initiative and Proactiveness: Takes initiative to contribute beyond their assigned tasks and proactively address issues or opportunities within the team. Eager to learn new skills, share knowledge with others, and take on additional responsibilities when needed. Initiative and proactiveness are indicators of a strong team-oriented mindset.", "metricsText": "- Tuân theo mô hình scrum để đẩy tasks đúng dealine.\n- Tham gia tích cực các cuộc meeting, planing.\n- Học hỏi và phát triển cùng nhau.\n- Phản hồi nhanh chóng.\n- Cơ sở đánh giá: dựa trên sự hiệu quả khi làm việc cùng team. Có thể record lại các module làm trong dự án, và những đóng góp của mình khi làm những module đó.", "metrics": ["Tuân theo mô hình scrum để đẩy tasks đúng dealine.", "Tham gia tích cực các cuộc meeting, planing.", "Học hỏi và phát triển cùng nhau.", "Phản hồi nhanh chóng.", "Cơ sở đánh giá: dựa trên sự hiệu quả khi làm việc cùng team. Có thể record lại các module làm trong dự án, và những đóng góp của mình khi làm những module đó."], "section": "Communication and Collaboration", "sectionVn": "Giao tiếp & hợp tác", "partWeight": 0.2, "innerWeight": 0.5, "overallWeight": 0.1, "row": 28, "selfScore": "", "evaluatorScore": ""}, {"id": "feedbacks-and-improvements", "name": "Feedbacks and Improvements", "vn": "Feedback & cải thiện", "plain": "Chủ động xin feedback, biến feedback thành hành động cải thiện và ưu tiên việc tạo giá trị.", "evidence": ["Danh sách feedback đã nhận -> hành động -> kết quả", "Ví dụ cải thiện process/code sau review", "Ghi chú cách bạn ưu tiên việc quan trọng trước"], "description": "- Actively seeks out feedback from their teammates when doing: code review, solutions and requirement analysis..\n\n - Actively seeks out feedback from their Project Manager/Scrum Master/Team Lead on working process and productivity\n\n - Works to use feedback that they receive as a tool for growth\n\n - Willing to deliver constructive feedback to other teammates", "metricsText": "- Lắng nghe những feedback của anh chị trong team để cải thiện kinh nghiệm của mình.\n- Thực hiện những hành động cải thiện theo sự chỉ dẫn của anh chị.\n- Liên tục học hỏi và cải tiến.\n- Tập trung vào những thứ tạo ra giá trị bản thân loại bỏ những thứ không cần thiết không tạo ra giá trị.\n- Tích cực quan sát, nhận định để đưa ra các quyết định nhanh hiệu quả dưới sự mơ hồ.\n- Rèn luyên tư duy có hệ thống , việc gì quan trọng thì mình làm trước việc gì ít quan trọng hơn thì mình neo đó để làm ngay sau.", "metrics": ["Lắng nghe những feedback của anh chị trong team để cải thiện kinh nghiệm của mình.", "Thực hiện những hành động cải thiện theo sự chỉ dẫn của anh chị.", "Liên tục học hỏi và cải tiến.", "Tập trung vào những thứ tạo ra giá trị bản thân loại bỏ những thứ không cần thiết không tạo ra giá trị.", "Tích cực quan sát, nhận định để đưa ra các quyết định nhanh hiệu quả dưới sự mơ hồ.", "Rèn luyên tư duy có hệ thống , việc gì quan trọng thì mình làm trước việc gì ít quan trọng hơn thì mình neo đó để làm ngay sau."], "section": "Individual Growth and Leadership", "sectionVn": "Phát triển cá nhân", "partWeight": 0.1, "innerWeight": 0.5, "overallWeight": 0.05, "row": 32, "selfScore": "", "evaluatorScore": ""}, {"id": "knowledge-sharing", "name": "Knowledge Sharing", "vn": "Chia sẻ kiến thức", "plain": "Giữ tinh thần học hỏi, tham gia sharing và chia sẻ lại feature/kiến thức cho member khác.", "evidence": ["Buổi sharing hoặc note đã viết", "Demo feature/module cho team", "Một lần giải thích lại vấn đề giúp member khác nắm được"], "description": "- Good understanding in their area of work and shares their knowledge with their teammates\n - By regularly discuss and share opinion on requirement analysis\n - By actively learning and asking for feedbacks when apply technical knowledge from their domain with their teammates/lead\n - By willing to join with their teammates on internal team's technical sharing\n - By actively providing their constructive feedbacks on team's technical sharing result", "metricsText": "- Luôn giữ tinh thần học hỏi, chia sẻ và hợp tác cao.\n - Tham gia các buổi sharing, chia sẻ kiến thức.\n - Tích cực tham chia sẻ những tính năng đã làm cho members trong team nắm.", "metrics": ["Luôn giữ tinh thần học hỏi, chia sẻ và hợp tác cao.", "Tham gia các buổi sharing, chia sẻ kiến thức.", "Tích cực tham chia sẻ những tính năng đã làm cho members trong team nắm."], "section": "Individual Growth and Leadership", "sectionVn": "Phát triển cá nhân", "partWeight": 0.1, "innerWeight": 0.5, "overallWeight": 0.05, "row": 33, "selfScore": "", "evaluatorScore": ""}], "timeline": [{"title": "March 2026 Check-in", "start": "03/03/2026", "end": "31/03/2026"}, {"title": "March 2026 Check-in", "start": "01/04/2026", "end": "30/04/2026"}, {"title": "April 2026 Check-in", "start": "01/05/2026", "end": "31/05/2026"}], "hasEnteredScores": false, "sourceFile": "EN0244_EIS_SelfEvaluation_Nguyễn Hùng Mạnh_Mobile Engineer_Junior II_EC 08_2026 - Performance Review.xlsx", "generatedDate": "21/05/2026"}</script>
+  <script>
+    const data = JSON.parse(document.getElementById('review-data').textContent);
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+    const pct = value => Math.round(value * 1000) / 10;
+    const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    const bulletList = items => items?.length ? `<ul>${items.map(item => `<li>${esc(item)}</li>`).join('')}</ul>` : '<p class="hint">Chưa có dữ liệu.</p>';
+    const scoreKey = 'en0244-review-digest-scores-v1';
+    let activeFilter = 'all';
+    let scores = JSON.parse(localStorage.getItem(scoreKey) || '{}');
+
+    function renderSummary() {
+      $('#summaryCards').innerHTML = data.sections.map(section => `
+        <article class="summary-card">
+          <div class="summary-head">
+            <div class="summary-title">${esc(section.vn)}</div>
+            <div class="pill">${pct(section.weight)}%</div>
+          </div>
+          <div class="bar" aria-hidden="true"><span style="--w:${pct(section.weight)}%;--c:${section.color}"></span></div>
+          <p class="memory">${esc(section.memory)}</p>
+          <div class="tags">${section.criteria.map(c => `<span class="tag">${esc(c.vn)}</span>`).join('')}</div>
+        </article>
+      `).join('');
+    }
+
+    function renderBrainList() {
+      $('#brainList').innerHTML = data.sections.map((section, index) => `
+        <li>
+          <div class="num">${index + 1}</div>
+          <div><div class="mini-title">${esc(section.vn)} - ${pct(section.weight)}%</div><div>${esc(section.memory)}</div></div>
+        </li>
+      `).join('');
+    }
+
+    function renderFilters() {
+      const buttons = [{name: 'all', label: 'Tất cả'}, ...data.sections.map(s => ({name: s.name, label: s.vn}))];
+      $('#filters').innerHTML = buttons.map(btn => `<button class="filter-btn ${btn.name === activeFilter ? 'active' : ''}" type="button" data-filter="${esc(btn.name)}">${esc(btn.label)}</button>`).join('');
+      $$('#filters .filter-btn').forEach(btn => btn.addEventListener('click', () => {
+        activeFilter = btn.dataset.filter;
+        renderFilters();
+        renderCriteria();
+      }));
+    }
+
+    function renderCriteria() {
+      const query = $('#searchBox').value.trim().toLowerCase();
+      const filtered = data.criteria.filter(c => {
+        const haystack = [c.name, c.vn, c.plain, c.sectionVn, c.metricsText, ...(c.evidence || [])].join(' ').toLowerCase();
+        const filterOk = activeFilter === 'all' || c.section === activeFilter;
+        const queryOk = !query || haystack.includes(query);
+        return filterOk && queryOk;
+      });
+      $('#criteriaList').innerHTML = filtered.map(c => `
+        <article class="criterion" data-id="${esc(c.id)}">
+          <div class="criterion-main">
+            <div>
+              <div class="criterion-name">${esc(c.vn)}</div>
+              <div class="criterion-sub">${esc(c.name)} · ${esc(c.sectionVn)}</div>
+              <div class="tags">
+                <span class="tag">Tổng: ${pct(c.overallWeight)}%</span>
+                <span class="tag">Trong nhóm: ${pct(c.innerWeight)}%</span>
+                <span class="tag">Row Excel: ${c.row}</span>
+              </div>
+            </div>
+            <div>
+              <p class="plain">${esc(c.plain)}</p>
+              <h3 class="mini-title" style="margin-top:10px">Bằng chứng nên chuẩn bị</h3>
+              <ul class="actions">${(c.evidence || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+            </div>
+            <div class="scorebox">
+              <label for="score-${esc(c.id)}">Tự chấm thử</label>
+              <div class="score-control">
+                <input id="score-${esc(c.id)}" type="range" min="0" max="10" step="0.5" value="${Number(scores[c.id] ?? 0)}" data-score-id="${esc(c.id)}">
+                <input class="score-num" type="number" min="0" max="10" step="0.5" value="${Number(scores[c.id] ?? 0)}" data-score-id="${esc(c.id)}" aria-label="Điểm ${esc(c.vn)}">
+              </div>
+            </div>
+          </div>
+          <details class="detail">
+            <summary>Mở success metrics và mô tả gốc</summary>
+            <div class="detail-body">
+              <div><h3>Success metrics</h3>${bulletList(c.metrics)}</div>
+              <div><h3>Description gốc</h3><p class="original">${esc(c.description || 'Không có mô tả.')}</p></div>
+            </div>
+          </details>
+        </article>
+      `).join('');
+      $('#emptyState').style.display = filtered.length ? 'none' : 'block';
+      bindScoreInputs();
+    }
+
+    function renderTimeline() {
+      $('#timelineList').innerHTML = data.timeline.map(item => `
+        <article class="time-card">
+          <div class="time-title">${esc(item.title)}</div>
+          <div class="time-date">${esc(item.start)} - ${esc(item.end)}</div>
+        </article>
+      `).join('');
+    }
+
+    function bindScoreInputs() {
+      $$('[data-score-id]').forEach(input => {
+        input.addEventListener('input', event => {
+          const id = event.target.dataset.scoreId;
+          let value = Number(event.target.value);
+          if (!Number.isFinite(value)) value = 0;
+          value = Math.min(10, Math.max(0, value));
+          scores[id] = value;
+          $$(`[data-score-id="${CSS.escape(id)}"]`).forEach(peer => { if (peer !== event.target) peer.value = value; });
+          localStorage.setItem(scoreKey, JSON.stringify(scores));
+          updateScores();
+        });
+      });
+    }
+
+    function rating(score) {
+      if (score <= 0) return 'Chưa chấm';
+      if (score < 5) return 'Cần cải thiện mạnh';
+      if (score < 7) return 'Ổn nhưng còn mỏng';
+      if (score < 8) return 'Khá';
+      if (score < 9) return 'Tốt';
+      return 'Rất tốt';
+    }
+
+    function updateScores() {
+      const total = data.criteria.reduce((sum, c) => sum + (Number(scores[c.id] || 0) * c.overallWeight), 0);
+      $('#overallScore').textContent = total.toFixed(1);
+      $('#scoreRows').innerHTML = data.sections.map(section => {
+        const sectionScore = section.criteria.reduce((sum, c) => sum + Number(scores[c.id] || 0) * c.innerWeight, 0);
+        return `<div class="score-row"><span>${esc(section.vn)}</span><strong>${sectionScore.toFixed(1)}/10</strong></div>`;
+      }).join('') + `<div class="score-row"><span>Xếp loại tự đọc</span><strong>${rating(total)}</strong></div>`;
+    }
+
+    $('#searchBox').addEventListener('input', renderCriteria);
+    $('#resetScores').addEventListener('click', () => {
+      scores = {};
+      localStorage.removeItem(scoreKey);
+      renderCriteria();
+      updateScores();
+    });
+    $('#printBtn').addEventListener('click', () => window.print());
+
+    renderSummary();
+    renderBrainList();
+    renderFilters();
+    renderCriteria();
+    renderTimeline();
+    updateScores();
+  </script>
+</body>
+</html>
