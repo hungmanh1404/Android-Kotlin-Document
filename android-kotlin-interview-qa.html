@@ -428,10 +428,11 @@
         </div>
         <nav class="nav" aria-label="Điều hướng nhanh">
           <a href="#oop">OOP</a>
-          <a href="#ui">Layout/UI</a>
-          <a href="#fragment">Fragment</a>
-          <a href="#async">Coroutine</a>
-          <a href="#tools">Git/Firebase</a>
+          <a href="#layout">Layout/UI</a>
+          <a href="#intent">Intent</a>
+          <a href="#navigation">Navigation</a>
+          <a href="#room">Room</a>
+          <a href="#mvvm">MVVM</a>
         </nav>
       </div>
     </div>
@@ -446,19 +447,19 @@
     <div class="summary" aria-label="Tổng quan nội dung">
       <div class="summary-item">
         <span>Nhóm 1</span>
-        <strong>Kotlin, OOP, class, data class</strong>
+        <strong>Kotlin, OOP, class, data class, scope functions</strong>
       </div>
       <div class="summary-item">
         <span>Nhóm 2</span>
-        <strong>Android lifecycle, Activity, Fragment</strong>
+        <strong>Android lifecycle, Activity, Fragment, Intent, Navigation</strong>
       </div>
       <div class="summary-item">
         <span>Nhóm 3</span>
-        <strong>RecyclerView, Retrofit, Coroutine</strong>
+        <strong>RecyclerView, Retrofit, Apollo GraphQL, Coroutine</strong>
       </div>
       <div class="summary-item">
         <span>Nhóm 4</span>
-        <strong>Git, Clean Code, Firebase, Storage</strong>
+        <strong>MVVM, DI, Design Pattern, Room, Local Storage</strong>
       </div>
     </div>
 
@@ -469,18 +470,27 @@
           <li><a href="#override-overload">Override vs Overload</a></li>
           <li><a href="#oop">OOP</a></li>
           <li><a href="#data-class">Data class vs class</a></li>
+          <li><a href="#scope-functions">Scope functions</a></li>
           <li><a href="#layout">Layout trong XML</a></li>
+          <li><a href="#viewgroup">View và ViewGroup</a></li>
           <li><a href="#replace-add">Replace vs Add Fragment</a></li>
           <li><a href="#activity-fragment">Activity vs Fragment</a></li>
+          <li><a href="#intent">Intent</a></li>
+          <li><a href="#navigation">Navigation</a></li>
           <li><a href="#lifecycle-call">Lifecycle khi có cuộc gọi</a></li>
           <li><a href="#retrofit">Retrofit</a></li>
+          <li><a href="#apollo-graphql">Apollo GraphQL</a></li>
           <li><a href="#recyclerview">RecyclerView</a></li>
           <li><a href="#coroutine">Coroutine</a></li>
           <li><a href="#git">Git</a></li>
           <li><a href="#clean-code">Clean Code</a></li>
+          <li><a href="#design-pattern">Design Pattern</a></li>
+          <li><a href="#dependency-injection">Dependency Injection</a></li>
           <li><a href="#firebase">Firebase</a></li>
           <li><a href="#debug-crash">Debug crash</a></li>
           <li><a href="#mvvm">MVVM</a></li>
+          <li><a href="#local-storage">Local Storage</a></li>
+          <li><a href="#room">Room Database</a></li>
           <li><a href="#storage">Internal vs External Storage</a></li>
         </ol>
       </aside>
@@ -615,12 +625,77 @@ class UserManager {
           <p>Dùng <code>data class</code> cho model API, request/response, UI state. Dùng <code>class</code> thường cho manager, controller, custom view, repository.</p>
         </section>
 
+        <section id="scope-functions">
+          <div class="tagline">
+            <span class="tag">Kotlin</span>
+            <span class="tag">Scope Functions</span>
+          </div>
+          <h2>4. Scope functions: let, run, with, apply, also</h2>
+          <div class="answer">
+            <p>Scope function giúp chạy một block code trong context của object. Cần nhớ hai điểm: object được tham chiếu bằng <code>this</code> hay <code>it</code>, và giá trị trả về là object gốc hay kết quả cuối block.</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Function</th>
+                <th>Context</th>
+                <th>Trả về</th>
+                <th>Khi dùng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>let</code></td>
+                <td><code>it</code></td>
+                <td>Kết quả cuối block</td>
+                <td>Xử lý object nullable, map object sang giá trị khác.</td>
+              </tr>
+              <tr>
+                <td><code>run</code></td>
+                <td><code>this</code></td>
+                <td>Kết quả cuối block</td>
+                <td>Tính toán nhiều bước trên cùng object.</td>
+              </tr>
+              <tr>
+                <td><code>with</code></td>
+                <td><code>this</code></td>
+                <td>Kết quả cuối block</td>
+                <td>Gọi nhiều method/property trên object đã có, không phải extension.</td>
+              </tr>
+              <tr>
+                <td><code>apply</code></td>
+                <td><code>this</code></td>
+                <td>Object gốc</td>
+                <td>Khởi tạo hoặc cấu hình object.</td>
+              </tr>
+              <tr>
+                <td><code>also</code></td>
+                <td><code>it</code></td>
+                <td>Object gốc</td>
+                <td>Log, debug, side effect không làm thay đổi flow chính.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">val displayName = user?.let { "${it.firstName} ${it.lastName}" }
+
+val intent = Intent(this, DetailActivity::class.java).apply {
+    putExtra("user_id", user.id)
+}
+
+val users = response.also {
+    Log.d("Users", "size=${it.size}")
+}</code></pre>
+          <div class="note">
+            <p>Cách phân biệt nhanh: <code>apply/also</code> trả về chính object nên hợp với chaining. <code>let/run/with</code> trả về kết quả cuối block nên hợp với transform hoặc tính toán.</p>
+          </div>
+        </section>
+
         <section id="layout">
           <div class="tagline">
             <span class="tag">Android XML</span>
             <span class="tag">UI</span>
           </div>
-          <h2>4. Các loại layout trong XML</h2>
+          <h2>5. Các loại layout trong XML</h2>
           <table>
             <thead>
               <tr>
@@ -657,12 +732,59 @@ class UserManager {
           </table>
         </section>
 
+        <section id="viewgroup">
+          <div class="tagline">
+            <span class="tag">Android View</span>
+            <span class="tag">ViewGroup</span>
+          </div>
+          <h2>6. View và ViewGroup khác gì nhau?</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Khái niệm</th>
+                <th>Cách hiểu</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>View</code></td>
+                <td>Thành phần UI đơn lẻ, tự vẽ nội dung và nhận input.</td>
+                <td><code>TextView</code>, <code>ImageView</code>, <code>Button</code>, <code>EditText</code>.</td>
+              </tr>
+              <tr>
+                <td><code>ViewGroup</code></td>
+                <td>Là subclass của <code>View</code>, có nhiệm vụ chứa, đo, sắp xếp và quản lý các view con.</td>
+                <td><code>LinearLayout</code>, <code>ConstraintLayout</code>, <code>FrameLayout</code>, <code>RecyclerView</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-xml">&lt;LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"&gt;
+
+    &lt;TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit" /&gt;
+&lt;/LinearLayout&gt;</code></pre>
+          <div class="note">
+            <p>Khi phỏng vấn, nói ngắn gọn: <code>ViewGroup</code> là container chứa các view con, còn <code>View</code> là phần tử UI đơn lẻ.</p>
+          </div>
+        </section>
+
         <section id="replace-add">
           <div class="tagline">
             <span class="tag">Fragment</span>
             <span class="tag">Transaction</span>
           </div>
-          <h2>5. So sánh replace và add Fragment</h2>
+          <h2>7. So sánh replace và add Fragment</h2>
           <table>
             <thead>
               <tr>
@@ -698,7 +820,7 @@ class UserManager {
             <span class="tag">Activity</span>
             <span class="tag">Fragment</span>
           </div>
-          <h2>6. So sánh Activity và Fragment</h2>
+          <h2>8. So sánh Activity và Fragment</h2>
           <table>
             <thead>
               <tr>
@@ -723,12 +845,100 @@ class UserManager {
           </table>
         </section>
 
+        <section id="intent">
+          <div class="tagline">
+            <span class="tag">Android Core</span>
+            <span class="tag">Intent</span>
+          </div>
+          <h2>9. Intent là gì?</h2>
+          <div class="answer">
+            <p><code>Intent</code> là message object dùng để yêu cầu Android thực hiện một hành động, ví dụ mở Activity, start Service, gửi broadcast hoặc mở app khác.</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Loại Intent</th>
+                <th>Cách dùng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Explicit Intent</code></td>
+                <td>Chỉ rõ component cần mở, thường dùng để chuyển màn trong app.</td>
+              </tr>
+              <tr>
+                <td><code>Implicit Intent</code></td>
+                <td>Chỉ mô tả action/data, Android tìm app phù hợp để xử lý.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">// Explicit Intent
+val intent = Intent(this, DetailActivity::class.java).apply {
+    putExtra("user_id", user.id)
+}
+startActivity(intent)
+
+// Implicit Intent
+val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://developer.android.com"))
+startActivity(webIntent)</code></pre>
+          <ul>
+            <li><code>putExtra()</code>: truyền dữ liệu nhỏ như id, string, flag.</li>
+            <li><code>Bundle</code>: gom nhiều dữ liệu khi truyền qua Activity/Fragment.</li>
+            <li>Không nên truyền object quá lớn qua Intent vì dễ gặp giới hạn Binder.</li>
+          </ul>
+        </section>
+
+        <section id="navigation">
+          <div class="tagline">
+            <span class="tag">Navigation</span>
+            <span class="tag">Back Stack</span>
+          </div>
+          <h2>10. Navigation trong Android</h2>
+          <div class="answer">
+            <p>Navigation là cách app chuyển giữa các màn hình và quản lý back stack. Với app nhiều Fragment, thường dùng Jetpack Navigation để khai báo graph, action, argument và deep link rõ ràng.</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Thành phần</th>
+                <th>Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>NavHostFragment</code></td>
+                <td>Container hiển thị destination hiện tại.</td>
+              </tr>
+              <tr>
+                <td><code>NavController</code></td>
+                <td>Điều khiển chuyển màn, pop back stack, navigate theo action/id.</td>
+              </tr>
+              <tr>
+                <td><code>Navigation Graph</code></td>
+                <td>Khai báo các destination, action, argument và start destination.</td>
+              </tr>
+              <tr>
+                <td><code>Safe Args</code></td>
+                <td>Plugin tạo class type-safe để truyền argument giữa Fragment.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">findNavController().navigate(
+    HomeFragmentDirections.actionHomeToDetail(userId = user.id)
+)
+
+findNavController().popBackStack()</code></pre>
+          <div class="note">
+            <p>Với bottom navigation, mỗi tab thường cần giữ state riêng. Tránh tự quản lý Fragment transaction phức tạp nếu Navigation Component đã đáp ứng được flow.</p>
+          </div>
+        </section>
+
         <section id="lifecycle-call">
           <div class="tagline">
             <span class="tag">Lifecycle</span>
             <span class="tag">Android OS</span>
           </div>
-          <h2>7. Đang dùng app có cuộc gọi đến thì lifecycle chạy như thế nào?</h2>
+          <h2>11. Đang dùng app có cuộc gọi đến thì lifecycle chạy như thế nào?</h2>
           <div class="answer">
             <p>Nếu cuộc gọi che app hoàn toàn, Activity thường đi qua <code>onPause()</code> rồi <code>onStop()</code>. Khi cuộc gọi kết thúc và quay lại app, Activity chạy <code>onRestart()</code>, <code>onStart()</code>, <code>onResume()</code>.</p>
           </div>
@@ -750,7 +960,7 @@ Cuộc gọi kết thúc, quay lại app
             <span class="tag">Network</span>
             <span class="tag">Retrofit</span>
           </div>
-          <h2>8. Retrofit và các phương thức GET, POST, PUT, DELETE</h2>
+          <h2>12. Retrofit và các phương thức GET, POST, PUT, DELETE</h2>
           <pre><code class="language-kotlin">interface ApiService {
     @GET("users")
     suspend fun getUsers(): List&lt;User&gt;
@@ -775,13 +985,66 @@ Cuộc gọi kết thúc, quay lại app
           </ul>
         </section>
 
+        <section id="apollo-graphql">
+          <div class="tagline">
+            <span class="tag">Network</span>
+            <span class="tag">Apollo</span>
+            <span class="tag">GraphQL</span>
+          </div>
+          <h2>13. Apollo GraphQL trong Android</h2>
+          <div class="answer">
+            <p><code>GraphQL</code> là cách client query đúng phần dữ liệu cần lấy. <code>Apollo Kotlin</code> đọc file <code>.graphql</code>, generate type Kotlin và giúp gọi query/mutation type-safe.</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Khái niệm</th>
+                <th>Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Query</code></td>
+                <td>Lấy dữ liệu, tương tự GET trong REST.</td>
+              </tr>
+              <tr>
+                <td><code>Mutation</code></td>
+                <td>Thay đổi dữ liệu, tương tự POST/PUT/DELETE.</td>
+              </tr>
+              <tr>
+                <td><code>Schema</code></td>
+                <td>Mô tả type, field và operation server hỗ trợ.</td>
+              </tr>
+              <tr>
+                <td><code>Generated model</code></td>
+                <td>Class Kotlin được Apollo sinh ra từ query/mutation.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-graphql">query UserDetail($id: ID!) {
+  user(id: $id) {
+    id
+    name
+    avatarUrl
+  }
+}</code></pre>
+          <pre><code class="language-kotlin">val response = apolloClient
+    .query(UserDetailQuery(id = userId))
+    .execute()
+
+val user = response.data?.user</code></pre>
+          <div class="note">
+            <p>Điểm khác REST: REST thường có nhiều endpoint cố định, còn GraphQL thường dùng một endpoint và client quyết định field cần lấy trong query.</p>
+          </div>
+        </section>
+
         <section id="recyclerview">
           <div class="tagline">
             <span class="tag">RecyclerView</span>
             <span class="tag">Adapter</span>
             <span class="tag">DiffUtil</span>
           </div>
-          <h2>9. RecyclerView</h2>
+          <h2>14. RecyclerView</h2>
           <h3>Thành phần chính</h3>
           <table>
             <thead>
@@ -825,6 +1088,30 @@ Cuộc gọi kết thúc, quay lại app
           <pre><code class="language-kotlin">viewModel.users.observe(viewLifecycleOwner) { users ->
     adapter.submitList(users)
 }</code></pre>
+
+          <h3>Các thành phần khi khởi tạo Adapter</h3>
+          <ul>
+            <li><code>item layout</code>: XML hoặc ViewBinding cho từng dòng trong list.</li>
+            <li><code>data model</code>: kiểu dữ liệu mà item cần hiển thị, ví dụ <code>UserUiModel</code>.</li>
+            <li><code>ViewHolder</code>: giữ binding/view và bind data vào UI.</li>
+            <li><code>DiffUtil.ItemCallback</code>: so sánh item cũ/mới khi dùng <code>ListAdapter</code>.</li>
+            <li><code>listener/callback</code>: xử lý click item, click button hoặc action trong row.</li>
+            <li><code>LayoutManager</code>: gắn vào RecyclerView để quyết định cách sắp xếp item.</li>
+          </ul>
+          <pre><code class="language-kotlin">class UserAdapter(
+    private val onUserClick: (UserUiModel) -&gt; Unit
+) : ListAdapter&lt;UserUiModel, UserAdapter.UserViewHolder&gt;(DiffCallback) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemUserBinding.inflate(inflater, parent, false)
+        return UserViewHolder(binding, onUserClick)
+    }
+
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+}</code></pre>
         </section>
 
         <section id="coroutine">
@@ -833,7 +1120,7 @@ Cuộc gọi kết thúc, quay lại app
             <span class="tag">Flow</span>
             <span class="tag">Dispatcher</span>
           </div>
-          <h2>10. Coroutine</h2>
+          <h2>15. Coroutine</h2>
           <table>
             <thead>
               <tr>
@@ -880,7 +1167,7 @@ Cuộc gọi kết thúc, quay lại app
             <span class="tag">Git</span>
             <span class="tag">Workflow</span>
           </div>
-          <h2>11. Git</h2>
+          <h2>16. Git</h2>
           <div class="checklist compact">
             <div><p><code>git status</code></p><p>Xem trạng thái file.</p></div>
             <div><p><code>git add .</code></p><p>Stage thay đổi.</p></div>
@@ -899,7 +1186,7 @@ Cuộc gọi kết thúc, quay lại app
             <span class="tag">Clean Code</span>
             <span class="tag">Maintainability</span>
           </div>
-          <h2>12. Clean Code</h2>
+          <h2>17. Clean Code</h2>
           <ul>
             <li>Đặt tên biến, hàm, class rõ nghĩa.</li>
             <li>Mỗi function nên làm một nhiệm vụ chính.</li>
@@ -912,13 +1199,113 @@ Cuộc gọi kết thúc, quay lại app
           </ul>
         </section>
 
+        <section id="design-pattern">
+          <div class="tagline">
+            <span class="tag">Architecture</span>
+            <span class="tag">Design Pattern</span>
+          </div>
+          <h2>18. Design Pattern thường gặp</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Pattern</th>
+                <th>Mục đích</th>
+                <th>Ví dụ Android/Kotlin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Adapter</code></td>
+                <td>Chuyển interface của một object sang interface mà nơi gọi mong muốn.</td>
+                <td><code>RecyclerView.Adapter</code> chuyển data list thành item view; mapper chuyển DTO sang UI model cũng là ý tưởng adapter.</td>
+              </tr>
+              <tr>
+                <td><code>Singleton</code></td>
+                <td>Đảm bảo một class chỉ có một instance dùng chung.</td>
+                <td><code>object SessionManager</code>, Retrofit/Apollo client, Room database instance.</td>
+              </tr>
+              <tr>
+                <td><code>Builder</code></td>
+                <td>Tạo object phức tạp theo từng bước, dễ đọc hơn constructor dài.</td>
+                <td><code>Retrofit.Builder()</code>, <code>Room.databaseBuilder()</code>, <code>NotificationCompat.Builder()</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">// Singleton trong Kotlin
+object AppLogger {
+    fun log(message: String) {
+        Log.d("AppLogger", message)
+    }
+}
+
+// Builder pattern
+val retrofit = Retrofit.Builder()
+    .baseUrl("https://api.example.com/")
+    .addConverterFactory(GsonConverterFactory.create())
+    .build()</code></pre>
+          <div class="note">
+            <p>Khi trả lời phỏng vấn, nên nói pattern giải quyết vấn đề gì trước, sau đó mới đưa ví dụ trong Android.</p>
+          </div>
+        </section>
+
+        <section id="dependency-injection">
+          <div class="tagline">
+            <span class="tag">Architecture</span>
+            <span class="tag">Dependency Injection</span>
+            <span class="tag">Hilt</span>
+          </div>
+          <h2>19. Dependency Injection là gì?</h2>
+          <div class="answer">
+            <p><code>Dependency Injection</code> là cách truyền dependency từ bên ngoài vào class thay vì class tự khởi tạo. Mục tiêu là giảm coupling, dễ test và dễ thay implementation.</p>
+          </div>
+          <pre><code class="language-kotlin">class UserRepository(
+    private val api: ApiService,
+    private val userDao: UserDao
+) {
+    suspend fun getUsers() = api.getUsers()
+}</code></pre>
+          <table>
+            <thead>
+              <tr>
+                <th>Khái niệm</th>
+                <th>Cách hiểu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Constructor injection</code></td>
+                <td>Truyền dependency qua constructor. Đây là cách nên ưu tiên.</td>
+              </tr>
+              <tr>
+                <td><code>Module</code></td>
+                <td>Nơi cung cấp object không thể tự constructor inject, ví dụ Retrofit, Room database.</td>
+              </tr>
+              <tr>
+                <td><code>Scope</code></td>
+                <td>Quy định vòng đời instance, ví dụ <code>@Singleton</code>, <code>@ActivityScoped</code>, <code>@ViewModelScoped</code>.</td>
+              </tr>
+              <tr>
+                <td><code>Test fake/mock</code></td>
+                <td>Dễ thay API thật bằng fake repository hoặc fake data source khi viết test.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val repository: UserRepository
+) : ViewModel()</code></pre>
+          <div class="wrong">
+            <p>Tránh để Repository tự gọi <code>Retrofit.Builder()</code> hoặc tự tạo database bên trong, vì class sẽ khó test và khó thay đổi cấu hình.</p>
+          </div>
+        </section>
+
         <section id="firebase">
           <div class="tagline">
             <span class="tag">Firebase</span>
             <span class="tag">FCM</span>
             <span class="tag">Crashlytics</span>
           </div>
-          <h2>16. Firebase</h2>
+          <h2>20. Firebase</h2>
           <h3>Firebase Cloud Messaging</h3>
           <table>
             <thead>
@@ -960,7 +1347,7 @@ Cuộc gọi kết thúc, quay lại app
             <span class="tag">Crashlytics</span>
             <span class="tag">Sentry</span>
           </div>
-          <h2>18. Từng debug crash bằng Sentry, Crashlytics, Logcat</h2>
+          <h2>21. Từng debug crash bằng Sentry, Crashlytics, Logcat</h2>
           <div class="answer">
             <p>Cách trả lời phỏng vấn: “Khi có crash, em xem stacktrace trên Crashlytics/Sentry trước, kiểm tra version app, device, OS, breadcrumbs và steps nếu có. Sau đó reproduce local, xem Logcat, đặt breakpoint hoặc thêm log để xác định nguyên nhân rồi fix và verify lại.”</p>
           </div>
@@ -975,8 +1362,9 @@ Cuộc gọi kết thúc, quay lại app
           <div class="tagline">
             <span class="tag">Architecture</span>
             <span class="tag">MVVM</span>
+            <span class="tag">UiState</span>
           </div>
-          <h2>19. MVVM</h2>
+          <h2>22. MVVM</h2>
           <div class="flow" aria-label="Luồng MVVM">
             <span>View</span>
             <span>ViewModel</span>
@@ -988,7 +1376,135 @@ Cuộc gọi kết thúc, quay lại app
           </div>
           <pre><code>View → ViewModel → Repository/DataSource → API/Database
 View ← State/LiveData/Flow ← ViewModel</code></pre>
-          <p>View không nên xử lý business logic. ViewModel giữ UI state và logic liên quan đến màn hình.</p>
+          <p><code>Fragment</code> hoặc <code>Activity</code> thuộc tầng View: nhận input, gọi action của ViewModel, observe state và render UI. View không nên xử lý business logic.</p>
+          <p><code>ViewModel</code> xử lý dữ liệu qua Repository, giữ trạng thái màn hình và sống sót qua configuration change như xoay màn hình.</p>
+          <pre><code class="language-kotlin">sealed interface UserUiState {
+    data object Loading : UserUiState
+    data class Success(val users: List&lt;UserUiModel&gt;) : UserUiState
+    data class Error(val message: String) : UserUiState
+}
+
+class UserViewModel(
+    private val repository: UserRepository
+) : ViewModel() {
+    private val _uiState = MutableStateFlow&lt;UserUiState&gt;(UserUiState.Loading)
+    val uiState: StateFlow&lt;UserUiState&gt; = _uiState
+
+    fun loadUsers() = viewModelScope.launch {
+        _uiState.value = UserUiState.Loading
+        runCatching { repository.getUsers() }
+            .onSuccess { _uiState.value = UserUiState.Success(it) }
+            .onFailure { _uiState.value = UserUiState.Error("Cannot load users") }
+    }
+}</code></pre>
+          <div class="note">
+            <p><code>ViewModel</code> không nên giữ reference trực tiếp tới View, Fragment, Activity hoặc Context UI. Nếu cần lưu state nhỏ sau process death, dùng <code>SavedStateHandle</code>.</p>
+          </div>
+        </section>
+
+        <section id="local-storage">
+          <div class="tagline">
+            <span class="tag">Storage</span>
+            <span class="tag">Local Data</span>
+          </div>
+          <h2>23. Local Storage trong Android</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Cách lưu</th>
+                <th>Dùng khi nào</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>SharedPreferences</code></td>
+                <td>Lưu key-value đơn giản như token, flag, setting nhỏ. Với project mới, thường cân nhắc DataStore.</td>
+              </tr>
+              <tr>
+                <td><code>DataStore</code></td>
+                <td>Lưu key-value hoặc typed object bất đồng bộ bằng Flow, thay thế SharedPreferences tốt hơn.</td>
+              </tr>
+              <tr>
+                <td><code>Room</code></td>
+                <td>Lưu dữ liệu có cấu trúc, cần query, relation, cache offline.</td>
+              </tr>
+              <tr>
+                <td><code>File/Internal Storage</code></td>
+                <td>Lưu file private của app như cache JSON, ảnh tạm, log nội bộ.</td>
+              </tr>
+              <tr>
+                <td><code>MediaStore/SAF</code></td>
+                <td>Lưu hoặc chọn file người dùng nhìn thấy như ảnh, video, document.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">// SharedPreferences đơn giản
+val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+prefs.edit().putString("access_token", token).apply()
+
+val token = prefs.getString("access_token", null)</code></pre>
+          <div class="note">
+            <p>Không lưu dữ liệu lớn hoặc danh sách phức tạp vào SharedPreferences. Với list/object có query, dùng Room hoặc file cache có format rõ ràng.</p>
+          </div>
+        </section>
+
+        <section id="room">
+          <div class="tagline">
+            <span class="tag">Room</span>
+            <span class="tag">Database</span>
+            <span class="tag">Offline Cache</span>
+          </div>
+          <h2>24. Room Database và chia sẻ dữ liệu</h2>
+          <div class="answer">
+            <p><code>Room</code> là thư viện ORM trên SQLite, giúp tạo database local với <code>Entity</code>, <code>Dao</code> và <code>RoomDatabase</code>. Room thường nằm dưới Repository và có thể làm source of truth cho dữ liệu offline.</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Thành phần</th>
+                <th>Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>@Entity</code></td>
+                <td>Định nghĩa table trong database.</td>
+              </tr>
+              <tr>
+                <td><code>@Dao</code></td>
+                <td>Khai báo query, insert, update, delete.</td>
+              </tr>
+              <tr>
+                <td><code>@Database</code></td>
+                <td>Khai báo database, version, entity và cung cấp DAO.</td>
+              </tr>
+              <tr>
+                <td><code>Migration</code></td>
+                <td>Xử lý thay đổi schema khi nâng version database.</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-kotlin">@Entity(tableName = "users")
+data class UserEntity(
+    @PrimaryKey val id: Int,
+    val name: String
+)
+
+@Dao
+interface UserDao {
+    @Query("SELECT * FROM users")
+    fun observeUsers(): Flow&lt;List&lt;UserEntity&gt;&gt;
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertUsers(users: List&lt;UserEntity&gt;)
+}</code></pre>
+          <h3>Chia sẻ dữ liệu giữa màn hình</h3>
+          <ul>
+            <li>Dữ liệu nhỏ như <code>id</code>: truyền qua Navigation argument, Bundle hoặc Intent extra.</li>
+            <li>Dữ liệu dùng chung trong một flow: dùng shared ViewModel scoped theo Activity hoặc navigation graph.</li>
+            <li>Dữ liệu cần bền vững/offline: lưu vào Room, màn hình khác đọc lại qua Repository.</li>
+            <li>Không truyền object lớn giữa màn hình; truyền id rồi query lại từ Repository/Room.</li>
+          </ul>
         </section>
 
         <section id="storage">
@@ -996,7 +1512,7 @@ View ← State/LiveData/Flow ← ViewModel</code></pre>
             <span class="tag">Storage</span>
             <span class="tag">Android</span>
           </div>
-          <h2>20. Internal Storage và External Storage</h2>
+          <h2>25. Internal Storage và External Storage</h2>
           <table>
             <thead>
               <tr>

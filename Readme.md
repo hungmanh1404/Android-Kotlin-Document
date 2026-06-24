@@ -2,6 +2,50 @@
 
 ![App Screenshot](/images/elementAndroid.png)
 
+# Sơ đồ hệ thống Android gốc
+```txt
+Android OS
+│
+├── Quản lý tài nguyên
+│   ├── RAM
+│   ├── CPU
+│   ├── Battery
+│   └── Network
+│
+├── Quản lý vòng đời
+│   ├── Activity lifecycle
+│   ├── Fragment lifecycle
+│   ├── View lifecycle
+│   ├── Service lifecycle
+│   └── Process lifecycle
+│
+├── Quản lý giao tiếp
+│   ├── Intent
+│   ├── Bundle
+│   ├── Deep link
+│   ├── Broadcast
+│   └── PendingIntent
+│
+├── Quản lý dữ liệu
+│   ├── SavedStateHandle
+│   ├── ViewModel state
+│   ├── Room
+│   ├── DataStore
+│   └── Remote API
+│
+├── Quản lý bảo mật
+│   ├── Permission
+│   ├── Sandbox
+│   ├── Scoped storage
+│   └── Exported component
+│
+└── Quản lý kiến trúc app
+    ├── UI layer
+    ├── Domain layer
+    ├── Data layer
+    └── Dependency direction
+```    
+
 # Key work Android Kotlin
 
 | Keyword                 | Ánh xạ vật lý             | Ý nghĩa cực ngắn       |
